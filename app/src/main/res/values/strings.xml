@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">PersonalAccounting</string>
+    <string name="submit_button">Submit</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="budget_remain">Budget Remain</string>
+    <string name="monthly_expense">Monthly Expense</string>
+    <string name="monthly_income">Monthly Income</string>
+    <string name="budget">Budget</string>
+    <string name="expense">Expense</string>
+    <string name="remain">Remain</string>
+    <string name="AddBillFailMessage">Fail to add</string>
+    <string name="AddBillSuccessMessage">Successfully added</string>
+    <string name="NoBillRecordMessage">No bill record</string>
+    <string name="EmptyBillMessage">Amount cannot be empty</string>
+    <string name="AmountEqualToZeroMessage">Amount cannot be zero</string>
+    <string name="ChangeUserSettingSuccessMessage">Setting successfully changed</string>
+    <string name="BillRecordNotFoundMessage">Cannot find bill record</string>
+    <string name="nav_home_title">Home</string>
+    <string name="nav_chart_title">Chart</string>
+    <string name="nav_setting_title">Setting</string>
+    <string name="bill_title">New Bill</string>
+    <string name="billUpdate_title">Bill Detail</string>
+    <string name="user_setting_title">User Setting</string>
+    <string name="user_setting_description">(Select to remove)</string>
+    <string name="expense_type">Expense Type</string>
+    <string name="income_type">Income Type</string>
+    <string name="income">Income</string>
+    <string name="id">ID</string>
+    <string name="date">Date</string>
+    <string name="amount">Amount</string>
+    <string name="type">Type</string>
+    <string name="remark">Remark</string>
+    <string name="update_button">Update</string>
+    <string name="delete_this_bill">Delete This Bill</string>
+    <string name="DeleteBillFailMessage">Fail to delete bill</string>
+    <string name="DeleteBillSuccessMessage">Bill successfully deleted</string>
+    <string name="BillUpdateSuccessMessage">Bill successfully updated</string>
+    <string name="BillUpdateFailMessage">Bill fail to update</string>
+    <string name="addNewType">New Type</string>
+    <string name="budget_title">Budget Summary</string>
+    <string name="expense_summary">Expense Summary</string>
+    <string name="income_summary">Income Summary</string>
+    <string name="chart_title">Chart</string>
+    <string-array name="monthArray">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+</resources>

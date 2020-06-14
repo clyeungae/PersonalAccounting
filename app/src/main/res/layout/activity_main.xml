@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#EBEBEB"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_title_height"
+        android:text="@string/app_name"
+        android:textSize="@dimen/general_title_text_size"
+        android:textColor="@color/main_view"
+        android:gravity="center"
+        android:id="@+id/title_view"/>
+    <CalendarView
+        android:layout_below="@id/title_view"
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="false"
+        android:stretchColumns="false"
+        android:layout_below="@id/calendar_view"
+        >
+        <TableRow>
+            <TextView
+                android:id="@+id/main_budgetRemain_view"
+                android:gravity="center_horizontal|top"
+                android:layout_weight="2"
+                android:text="@string/budget_remain"
+                android:textColor="@color/main_view"
+                android:textSize="@dimen/main_view_text"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_view_height"
+
+                />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/budget_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_budgetRemainButton_height"
+                android:textSize="@dimen/main_budgetRemain_text"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:background="@color/main_button"
+
+                />
+
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/main_monthlyExpense_view"
+                android:gravity="center_horizontal|top"
+                android:layout_weight="1"
+                android:text="@string/monthly_expense"
+                android:textSize="@dimen/main_view_text"
+                android:textColor="@color/main_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_view_height"/>
+            <TextView
+                android:id="@+id/main_monthlyIncome_view"
+                android:gravity="center_horizontal|top"
+                android:layout_weight="1"
+                android:text="@string/monthly_income"
+                android:textSize="@dimen/main_view_text"
+                android:textColor="@color/main_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_view_height"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/monthlyExpense_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_button_panel_height"
+                android:textSize="@dimen/general_button_panel_text_size"
+                android:textColor="@color/expense"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:background="@color/main_button"
+
+                />
+            <Button
+                android:id="@+id/income_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_button_panel_height"
+                android:textSize="@dimen/general_button_panel_text_size"
+                android:textColor="@color/income"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:background="@color/main_button"
+                />
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_alignParentBottom="true"
+        android:shrinkColumns="false"
+        android:stretchColumns="false"
+        >
+        <TableRow>
+            <ImageButton
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:id="@+id/chart_button"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_insert_chart_24"/>
+            <ImageButton
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:id="@+id/home_button"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_home_24"/>
+            <ImageButton
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:id="@+id/setting_button"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_settings_24"/>
+
+        </TableRow>
+    </TableLayout>
+
+
+</RelativeLayout>

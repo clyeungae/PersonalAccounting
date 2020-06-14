@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_title_height"
+        android:text="@string/billUpdate_title"
+        android:textSize="@dimen/general_title_text_size"
+        android:textColor="@color/main_view"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:id="@+id/billUpdate_title"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/billUpdate_title">
+
+        <TableLayout
+            android:id="@+id/billUpdate_table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/billUpdate_title">
+
+            <TableRow>
+                <TextView
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_width="wrap_content"
+                    android:text="@string/id"
+                    android:gravity="center"
+                    android:layout_weight="2"/>
+                <TextView
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/billUpdate_id"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_width="wrap_content"
+                    android:text="@string/amount"
+                    android:gravity="center"
+                    android:layout_weight="2"/>
+                <EditText
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:id="@+id/billUpdate_amountInput"
+                    android:inputType="numberDecimal"/>
+
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/general_column_height"
+                    android:text="@string/income"
+                    android:gravity="center"
+                    android:layout_weight="2"/>
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/general_column_height"
+                    android:id="@+id/billUpdate_incomeSwitch"
+                    android:layout_weight="1"
+                    />
+
+            </TableRow>
+            <TextView
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/date"
+                android:gravity="center"/>
+
+            <CalendarView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/billUpdate_dateInput"/>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/general_column_height"
+                    android:gravity="center"
+                    android:layout_weight="2"
+                    android:text="@string/type"/>
+                <Spinner
+                    android:id="@+id/billUpdate_typeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+            </TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/general_column_height"
+                android:text = "@string/remark"
+                android:gravity="center"/>
+            <EditText
+                android:id ="@+id/billUpdate_remarkInput"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/general_column_height"
+                android:inputType="textShortMessage"/>
+            <CheckBox
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/delete_this_bill"
+                android:id="@+id/billUpdate_deleteCheckBox"/>
+
+            <TableRow
+                android:layout_margin="@dimen/billUpdate_button_margin">
+                <Button
+                    android:id="@+id/billUpdate_cancel_button"
+                    android:text="@string/cancel_button"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/billUpdate_update_button"
+                    android:text="@string/update_button"
+                    android:layout_weight="1"/>
+            </TableRow>
+        </TableLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
