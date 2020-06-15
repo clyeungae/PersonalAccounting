@@ -61,10 +61,14 @@ public class ChartActivity extends AppCompatActivity {
     int selectedYear;
     boolean selectedIncome = false;
     String selectedType = "All";
+    Spinner typeSpinner;
 
     ImageButton chartButton;
     ImageButton homeButton;
     ImageButton settingButton;
+
+    ArrayList<String> expenseTypeList;
+    ArrayList<String> incomeTypeList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +96,12 @@ public class ChartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        expenseTypeList = myDB.getExpenseTypeList();
+        expenseTypeList.add(0,"All");
+        incomeTypeList = myDB.getIncomeTypeList();
+        incomeTypeList.add(0, "All");
+
         initBarChart();
         showBarChart();
         initBarChartParameterTable();
@@ -159,7 +169,8 @@ public class ChartActivity extends AppCompatActivity {
         typeText.setGravity(Gravity.CENTER);
         typeText.setLayoutParams(rowParams);
 
-        Spinner typeSpinner = new Spinner(getApplicationContext());
+        typeSpinner = new Spinner(getApplicationContext());
+        typeSpinner.setAdapter(new ArrayAdapter<>(ChartActivity.this, android.R.layout.simple_spinner_item, expenseTypeList));
         typeSpinner.setGravity(Gravity.CENTER);
         typeSpinner.setLayoutParams(rowParams);
         typeSpinner.setOnItemSelectedListener(new typeSpinnerOnItemSelectedListener());
@@ -216,7 +227,7 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private void showBarChart(){
-        List<Double> dateValueList = getBillDataOfYear(selectedYear, selectedIncome);
+        List<Double> dateValueList = getBillDataOfYear(selectedYear, selectedIncome, selectedType);
 
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             final String[] monthArray = getResources().getStringArray(R.array.monthArray);
@@ -231,9 +242,13 @@ public class ChartActivity extends AppCompatActivity {
             BarEntry barEntry = new BarEntry(i, dateValueList.get(i).floatValue());
             entries.add(barEntry);
         }
+
         String title = "";
         if(selectedType.equals("All")){
             title = selectedYear + (selectedIncome?" Income":" Expense");
+        }
+        else{
+            title = selectedYear + " " + selectedType;
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, title);
@@ -244,7 +259,7 @@ public class ChartActivity extends AppCompatActivity {
         barChart.setData(data);
     }
 
-    private ArrayList<Double> getBillDataOfYear(int year, boolean income){
+    private ArrayList<Double> getBillDataOfYear(int year, boolean income, String type){
         Cursor data = myDB.getBillTable();
         ArrayList<Double> result = new ArrayList<>();
         for(int i = 0; i < 12; i++){
@@ -253,12 +268,15 @@ public class ChartActivity extends AppCompatActivity {
         while(data.moveToNext()){
             double amount = data.getDouble(1);
             int month = data.getInt(3);
+            String billType = data.getString(5);
             if (data.getInt(2) == year){
-                if(income && amount > 0){
-                    result.set(month, result.get(month) + Math.abs(amount));
-                }
-                else if(!income && amount < 0){
-                    result.set(month, result.get(month) + Math.abs(amount));
+                if(billType.equals(type) || type.equals("All")){
+                    if(income && amount > 0){
+                        result.set(month, result.get(month) + Math.abs(amount));
+                    }
+                    else if(!income && amount < 0){
+                        result.set(month, result.get(month) + Math.abs(amount));
+                    }
                 }
             }
 
@@ -285,7 +303,9 @@ public class ChartActivity extends AppCompatActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
+            selectedType = adapterView.getItemAtPosition(position).toString();
+            initBarChart();
+            showBarChart();
         }
 
         @Override
@@ -299,9 +319,12 @@ public class ChartActivity extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             if(isChecked){
                 selectedIncome = true;
+                typeSpinner.setAdapter(new ArrayAdapter<>(ChartActivity.this, android.R.layout.simple_spinner_item, incomeTypeList));
+
             }
             else {
                 selectedIncome = false;
+                typeSpinner.setAdapter(new ArrayAdapter<>(ChartActivity.this, android.R.layout.simple_spinner_item, expenseTypeList));
             }
 
             initBarChart();
