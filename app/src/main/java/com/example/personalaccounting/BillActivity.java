@@ -90,6 +90,9 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
         typeSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, expenseTypeList.toArray()));
         typeSpinner.setOnItemSelectedListener(this);
 
+        typeSwitch.setTextOff(getResources().getString(R.string.expense));
+        typeSwitch.setTextOn(getResources().getString(R.string.income));
+        typeSwitch.setShowText(true);
         typeSwitch.setOnCheckedChangeListener(new typeSwitchOnCheckedChangeListener());
 
     }

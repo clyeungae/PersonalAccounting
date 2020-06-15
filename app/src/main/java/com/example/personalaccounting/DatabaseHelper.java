@@ -241,8 +241,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(BILL_TABLE_NAME," ID= ?", new String[]{String.valueOf(billId)}) > 0;
     }
 
-    public boolean addUserInfo(User user){
-
+    public User addUserInfo(){
+        User user = new User();
         SQLiteDatabase db = this.getWritableDatabase();
 
 
@@ -259,7 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.MONTH));
         contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.DATE));
 
-        long result = db.insert(USER_TABLE_NAME, null, contentValues);
+        db.insert(USER_TABLE_NAME, null, contentValues);
 
         LinkedHashMap<String, Double> expenseMap = user.getExpenseTypeBudgetMap();
         LinkedHashMap<String, Double> incomeMap = user.getIncomeTypeBudgetMap();
@@ -269,7 +269,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for(String string:incomeMap.keySet()){
             addIncomeType(string, incomeMap.get(string));
         }
-        return result != -1;
+        return user;
     }
 
     public User getUserInfo(){
@@ -298,11 +298,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return user;
         }
         else{
-            addUserInfo(new User());
-            return getUserInfo();
+            return addUserInfo();
         }
     }
 
+    public Calendar getUserStartDate(){
+        try{
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+            Calendar calendar = Calendar.getInstance();
+            if(data.moveToFirst()){
+
+                calendar.set(data.getInt(4), data.getInt(5), data.getInt(6));
+            }
+            return calendar;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Calendar getUserLastActiveDate(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        Calendar calendar = Calendar.getInstance();
+        if(data.moveToFirst()){
+            calendar.set(data.getInt(7), data.getInt(8), data.getInt(9));
+        }
+        return calendar;
+    }
+
+    public void setUserLastActiveDate(Calendar calendar){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_TABLE_COL8, calendar.get(Calendar.YEAR));
+        contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.MONTH));
+        contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.DATE));
+
+        db.update(USER_TABLE_NAME, contentValues,null, null);
+    }
 
     public boolean addIncomeType(String newIncomeType, double typeBudget){
         SQLiteDatabase db = this.getWritableDatabase();
