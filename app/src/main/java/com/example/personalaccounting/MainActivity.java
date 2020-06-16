@@ -8,11 +8,14 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     Intent originalIntent;
@@ -35,7 +38,14 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         user = myDB.getUserInfo();
+        myDB.setUserLastActiveDate(Calendar.getInstance());
         updateButton();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myDB.setUserLastActiveDate(Calendar.getInstance());
     }
 
     @Override

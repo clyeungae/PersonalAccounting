@@ -41,6 +41,7 @@
     <string name="expense_summary">Expense Summary</string>
     <string name="income_summary">Income Summary</string>
     <string name="chart_title">Chart</string>
+    <string name="year">Year</string>
     <string-array name="monthArray">
         <item>Jan</item>
         <item>Feb</item>

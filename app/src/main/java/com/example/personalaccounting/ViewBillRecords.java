@@ -20,6 +20,9 @@ public class ViewBillRecords extends AppCompatActivity {
     DatabaseHelper myDB;
     private BillArrayAdapter billArrayAdapter;
     boolean income;
+    int year;
+    int month;
+    String type = "All";
     ListView listView;
 
 
@@ -30,6 +33,9 @@ public class ViewBillRecords extends AppCompatActivity {
 
         Intent intent = getIntent();
         income = intent.getBooleanExtra("income", false);
+        year = intent.getIntExtra("year", -1);
+        month = intent.getIntExtra("month", -1);
+        type = intent.getStringExtra("type");
         listView = (ListView) findViewById(R.id.billrecords_view);
         myDB = new DatabaseHelper(this);
 
@@ -43,9 +49,23 @@ public class ViewBillRecords extends AppCompatActivity {
         ArrayList<Bill> billArrayList = new ArrayList<>();
         if (billRecords.getCount() == 0) Toast.makeText(ViewBillRecords.this, R.string.NoBillRecordMessage, Toast.LENGTH_LONG).show();
         else{
-
             while (billRecords.moveToNext()){
-                if((billRecords.getDouble(1) > 0) == income){
+                double amount = billRecords.getDouble(1);
+                int billYear = billRecords.getInt(2);
+                int billMonth = billRecords.getInt(3);
+                String billType = billRecords.getString(5);
+                if(year != -1 && month != -1){
+                    if ((amount > 0) == income && billYear == year && billMonth == month){
+                        if(type.equals("All") || type.equals(billType)){
+                            billArrayList.add(new Bill(billRecords.getInt(0), billRecords.getDouble(1),
+                                    new GregorianCalendar(billRecords.getInt(2), billRecords.getInt(3), billRecords.getInt(4)),
+                                    billRecords.getString(5),
+                                    billRecords.getString(6)));
+                        }
+
+                    }
+                }
+                else if((billRecords.getDouble(1) > 0) == income){
                     billArrayList.add(new Bill(billRecords.getInt(0), billRecords.getDouble(1),
                             new GregorianCalendar(billRecords.getInt(2), billRecords.getInt(3), billRecords.getInt(4)),
                             billRecords.getString(5),
