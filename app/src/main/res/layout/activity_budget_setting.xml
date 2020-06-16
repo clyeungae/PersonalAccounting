@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:id="@+id/userSetting_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_title_height"
+        android:text="@string/budgetSetting_title"
+        android:textColor="@color/main_view"
+        android:textSize="@dimen/general_title_text_size"
+        android:gravity="center" />
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/userSetting_title"
+        android:layout_above="@id/userSetting_button_panel"
+        >
+        <TableLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/userSetting_budget_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/budget" />
+
+                <EditText
+                    android:id="@+id/userSetting_budget_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+
+            </TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_column_height"
+                android:text="@string/budgetSetting_description"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/userSetting_expenseType_title"
+                android:text="@string/expense_type"
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                />
+
+                <ScrollView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <TableLayout
+                        android:id="@+id/userSetting_expenseType_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+                    </TableLayout>
+                </ScrollView>
+
+            <TextView
+                android:id="@+id/userSetting_incomeType_title"
+                android:text="@string/income_type"
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                />
+
+                <ScrollView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <TableLayout
+                        android:id="@+id/userSetting_incomeType_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                    </TableLayout>
+                </ScrollView>
+
+        </TableLayout>
+    </ScrollView>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/userSetting_button_panel"
+
+        >
+
+        <TableRow
+            android:layout_marginHorizontal="@dimen/budgetSetting_button_margin"
+            android:layout_margin="@dimen/budgetSetting_button_margin">
+            <Button
+                android:id="@+id/userSetting_cancel_button"
+                android:text="@string/cancel_button"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/userSetting_submit_button"
+                android:text="@string/submit_button"
+                android:layout_weight="1"/>
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

@@ -29,16 +29,16 @@
                 android:layout_weight="1"
                 android:scaleType="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_baseline_account_box_24"/>
+                android:src="@drawable/ic_baseline_monetization_on_24"/>
             <ImageButton
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_weight="1"
                 android:layout_height="@dimen/setting_button_height"
                 android:layout_width="match_parent"
                 android:id="@+id/generalSetting_button"
                 android:scaleType="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_baseline_settings_applications_24"/>
+                android:src="@drawable/ic_baseline_account_box_24"/>
         </TableRow>
         <TableRow
             android:layout_weight="1">

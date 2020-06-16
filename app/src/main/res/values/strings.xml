@@ -20,8 +20,8 @@
     <string name="nav_setting_title">Setting</string>
     <string name="bill_title">New Bill</string>
     <string name="billUpdate_title">Bill Detail</string>
-    <string name="user_setting_title">User Setting</string>
-    <string name="user_setting_description">(Select to remove)</string>
+    <string name="budgetSetting_title">Budget Setting</string>
+    <string name="budgetSetting_description">(Check to remove)</string>
     <string name="expense_type">Expense Type</string>
     <string name="income_type">Income Type</string>
     <string name="income">Income</string>

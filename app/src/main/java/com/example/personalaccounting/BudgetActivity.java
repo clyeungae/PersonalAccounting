@@ -180,7 +180,7 @@ public class BudgetActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(BudgetActivity.this, UserSettingActivity.class);
+            Intent intent = new Intent(BudgetActivity.this, BudgetSettingActivity.class);
             startActivity(intent);
 
         }

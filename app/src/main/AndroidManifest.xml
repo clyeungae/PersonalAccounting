@@ -11,7 +11,7 @@
         <activity android:name=".BillActivity"/>
         <activity android:name=".ViewBillRecords"/>
         <activity android:name=".SettingActivity"/>
-        <activity android:name=".UserSettingActivity"
+        <activity android:name=".BudgetSettingActivity"
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".BudgetActivity"/>
         <activity android:name=".BillUpdateActivity"/>

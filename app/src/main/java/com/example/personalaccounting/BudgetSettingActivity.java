@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,8 +18,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class UserSettingActivity extends AppCompatActivity {
+public class BudgetSettingActivity extends AppCompatActivity {
     DatabaseHelper myDB;
     User user;
 
@@ -53,7 +53,7 @@ public class UserSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_setting);
+        setContentView(R.layout.activity_budget_setting);
 
         myDB = new DatabaseHelper(this);
 
@@ -76,9 +76,8 @@ public class UserSettingActivity extends AppCompatActivity {
         user = myDB.getUserInfo();
         budgetInput.setHint(Double.toString(user.getBudget()));
 
-
-        expenseTypeList = createCheckBoxList(expenseTypeTable, myDB.getExpenseTypeList());
-        incomeTypeList = createCheckBoxList(incomeTypeTable, myDB.getIncomeTypeList());
+        expenseTypeList = createCheckBoxList(expenseTypeTable, myDB.getExpenseTypeList(), myDB.getExpenseTypeBudgetMap());
+        incomeTypeList = createCheckBoxList(incomeTypeTable, myDB.getIncomeTypeList(), myDB.getIncomeTypeBudgetMap());
 
         addExpenseTypeImageButton = new ImageButton(this);
         addExpenseTypeImageButton.setImageResource(R.drawable.ic_baseline_add_box_24);
@@ -91,8 +90,9 @@ public class UserSettingActivity extends AppCompatActivity {
         incomeTypeTable.addView(addIncomeTypeImageButton);
     }
 
-    private ArrayList<Integer> createCheckBoxList(TableLayout tableLayout, ArrayList<String> stringArrayList) {
+    private ArrayList<Integer> createCheckBoxList(TableLayout tableLayout, ArrayList<String> stringArrayList, HashMap<String, Double> budgetMap) {
         ArrayList<Integer> result = new ArrayList<>();
+
         for(String string: stringArrayList){
             TableRow tableRow = new TableRow(this);
             CheckBox checkBox = new CheckBox(this);
@@ -109,7 +109,7 @@ public class UserSettingActivity extends AppCompatActivity {
             checkBox.setOnCheckedChangeListener( new checkBoxOnCheckedChangeListener());
 
             budgetInput.setLayoutParams(rowParams);
-            budgetInput.setHint(R.string.budget);
+            budgetInput.setHint(String.valueOf(budgetMap.getOrDefault(string, 0.0)));
             budgetInput.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
             budgetInput.setId(originalTypeBudgetId++);
 
@@ -132,25 +132,22 @@ public class UserSettingActivity extends AppCompatActivity {
             EditText expenseType = new EditText(getApplicationContext());
             EditText expenseBudget = new EditText(getApplicationContext());
 
+            tableRow.setWeightSum(3f);
+            TableRow.LayoutParams rowParams  = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1.0f);
+
             expenseType.setSingleLine();
-            FrameLayout container = new FrameLayout(getApplicationContext());
-            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.width = 270;
-            expenseType.setLayoutParams(layoutParams);
+            expenseType.setLayoutParams(rowParams);
             expenseType.setHint(R.string.addNewType);
-            container.addView(expenseType);
 
             imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
             imageButton.setOnClickListener(new removeExpenseTypeImageButtonOnClickListener());
+            imageButton.setLayoutParams(rowParams);
 
             expenseBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            expenseBudget.setHint(R.string.budget);
             expenseBudget.setSingleLine();
-            FrameLayout budgetContainer = new FrameLayout(getApplicationContext());
-            FrameLayout.LayoutParams budgetLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-            budgetLayoutParams.width = 150;
-            expenseBudget.setLayoutParams(layoutParams);
-            budgetContainer.addView(expenseBudget);
+            expenseBudget.setLayoutParams(rowParams);
+            expenseBudget.setHint(R.string.budget);
+
 
             imageButton.setId(imageButtonId++);
             expenseType.setId(newTypeId++);
@@ -159,8 +156,8 @@ public class UserSettingActivity extends AppCompatActivity {
             addExpenseTypeEditTextList.add(expenseType);
 
             tableRow.addView(imageButton);
-            tableRow.addView(container);
-            tableRow.addView(budgetContainer);
+            tableRow.addView(expenseType);
+            tableRow.addView(expenseBudget);
 
             expenseTypeTable.addView(tableRow);
             expenseTypeTable.addView(addExpenseTypeImageButton);
@@ -191,29 +188,26 @@ public class UserSettingActivity extends AppCompatActivity {
             incomeTypeTable.removeView(addIncomeTypeImageButton);
 
             TableRow tableRow = new TableRow(getApplicationContext());
-
             ImageButton imageButton = new ImageButton(getApplicationContext());
-            imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
-            imageButton.setOnClickListener(new removeIncomeTypeImageButtonOnClickListener());
-
             EditText incomeType = new EditText(getApplicationContext());
+            EditText incomeTypeBudget = new EditText(getApplicationContext());
+
+            tableRow.setWeightSum(3f);
+            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+
             incomeType.setHint(R.string.addNewType);
             incomeType.setSingleLine();
-            FrameLayout container = new FrameLayout(getApplicationContext());
-            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.width = 270;
-            incomeType.setLayoutParams(layoutParams);
-            container.addView(incomeType);
+            incomeType.setLayoutParams(rowParams);
 
-            EditText incomeTypeBudget = new EditText(getApplicationContext());
+            imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+            imageButton.setOnClickListener(new removeIncomeTypeImageButtonOnClickListener());
+            imageButton.setLayoutParams(rowParams);
+
             incomeTypeBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             incomeTypeBudget.setHint(R.string.budget);
             incomeTypeBudget.setSingleLine();
-            FrameLayout budgetContainer = new FrameLayout(getApplicationContext());
-            FrameLayout.LayoutParams budgetLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-            budgetLayoutParams.width = 150;
-            incomeTypeBudget.setLayoutParams(layoutParams);
-            budgetContainer.addView(incomeTypeBudget);
+            incomeTypeBudget.setLayoutParams(rowParams);
+
 
             tableRow.setId(tableRowId++);
             imageButton.setId(imageButtonId++);
@@ -223,8 +217,8 @@ public class UserSettingActivity extends AppCompatActivity {
             addIncomeTypeEditTextList.add(incomeType);
 
             tableRow.addView(imageButton);
-            tableRow.addView(container);
-            tableRow.addView(budgetContainer);
+            tableRow.addView(incomeType);
+            tableRow.addView(incomeTypeBudget);
 
             incomeTypeTable.addView(tableRow);
             incomeTypeTable.addView(addIncomeTypeImageButton);
@@ -339,7 +333,7 @@ public class UserSettingActivity extends AppCompatActivity {
                     }
                 }
             }
-            Toast.makeText(UserSettingActivity.this, R.string.ChangeUserSettingSuccessMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(BudgetSettingActivity.this, R.string.ChangeUserSettingSuccessMessage, Toast.LENGTH_SHORT).show();
             finish();
         }
     }

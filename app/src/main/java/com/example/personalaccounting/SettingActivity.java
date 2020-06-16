@@ -27,7 +27,7 @@ public class SettingActivity extends AppCompatActivity {
     private class accountSettingButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(SettingActivity.this, UserSettingActivity.class);
+            Intent intent = new Intent(SettingActivity.this, BudgetSettingActivity.class);
             startActivity(intent);
         }
     }
