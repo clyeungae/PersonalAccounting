@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +63,7 @@ public class ChartActivity extends AppCompatActivity {
     boolean selectedIncome = false;
     String selectedType = "All";
     Spinner typeSpinner;
+    Switch incomeSwitch;
 
     ImageButton chartButton;
     ImageButton homeButton;
@@ -91,12 +93,6 @@ public class ChartActivity extends AppCompatActivity {
         homeButton.setOnClickListener(new homeButtonOnClickListener());
         settingButton.setOnClickListener(new settingButtonOnClickListener());
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         expenseTypeList = myDB.getExpenseTypeList();
         expenseTypeList.add(0,"All");
         incomeTypeList = myDB.getIncomeTypeList();
@@ -105,6 +101,7 @@ public class ChartActivity extends AppCompatActivity {
         initBarChart();
         showBarChart();
         initBarChartParameterTable();
+
     }
 
     private void initBarChartParameterTable(){
@@ -150,7 +147,7 @@ public class ChartActivity extends AppCompatActivity {
         switchText.setGravity(Gravity.CENTER);
         switchText.setLayoutParams(rowParams);
 
-        Switch incomeSwitch = new Switch(getApplicationContext());
+        incomeSwitch = new Switch(getApplicationContext());
         incomeSwitch.setTextOff(getResources().getString(R.string.expense));
         incomeSwitch.setTextOn(getResources().getString(R.string.income));
         incomeSwitch.setShowText(true);
@@ -289,9 +286,13 @@ public class ChartActivity extends AppCompatActivity {
 
         @Override
         public void onValueSelected(Entry e, Highlight h) {
-            int month = (int) e.getX();
             Intent intent = new Intent(ChartActivity.this, ViewBillRecords.class);
+            intent.putExtra("year", selectedYear);
+            intent.putExtra("income", selectedIncome);
+            intent.putExtra("month", (int) e.getX());
+            intent.putExtra("type", selectedType);
             startActivity(intent);
+
         }
 
         @Override
