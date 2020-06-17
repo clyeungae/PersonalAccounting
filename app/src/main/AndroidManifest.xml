@@ -16,6 +16,7 @@
         <activity android:name=".BudgetActivity"/>
         <activity android:name=".BillUpdateActivity"/>
         <activity android:name=".ChartActivity"/>
+        <activity android:name=".UserSettingActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

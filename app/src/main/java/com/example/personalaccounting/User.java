@@ -1,5 +1,7 @@
 package com.example.personalaccounting;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -11,50 +13,30 @@ public class User {
     private double monthlyIncome = 0.00;
     private ArrayList<String> incomeType = new ArrayList<String>(Arrays.asList("Salary", "Other"));
     private ArrayList<String> expenseType = new ArrayList<String>(Arrays.asList("Clothing", "Food", "Housing", "Transport", "Other"));
-    private LinkedHashMap<String, Double> incomeTypeBudget = new LinkedHashMap<String, Double>(){
-        {
-            put("Salary", 0.0);
-            put("Other", 0.0);
-        }
-    };
-    private LinkedHashMap<String, Double> expenseTypeBudget = new LinkedHashMap<String, Double>(){
-        {
-            put("Clothing", 0.0);
-            put("Food", 0.0);
-            put("Housing", 0.0);
-            put("Transport", 0.0);
-            put("Other", 0.0);
-        }
-    };
+    private final LinkedHashMap<String, Double> defaultIncomeTypeBudget;
+    private final LinkedHashMap<String, Double> defaultExpenseTypeBudget;
+    private LinkedHashMap<String, Double> incomeTypeBudget;
+    private LinkedHashMap<String, Double> expenseTypeBudget;
 
-    public User(){}
+    public User(final Context context){
+        defaultExpenseTypeBudget = new LinkedHashMap<String, Double>(){
+            {
+                put(context.getResources().getString(R.string.clothing), 0.0);
+                put(context.getResources().getString(R.string.food), 0.0);
+                put(context.getResources().getString(R.string.housing), 0.0);
+                put(context.getResources().getString(R.string.transport), 0.0);
+                put(context.getResources().getString(R.string.other), 0.0);
+            }
+        };
+        expenseTypeBudget = new LinkedHashMap<String, Double>(defaultExpenseTypeBudget);
 
-    public User(double budget, double monthlyExpense, double monthlyIncome) {
-        this.budget = budget;
-        this.monthlyExpense = monthlyExpense;
-        this.monthlyIncome = monthlyIncome;
-    }
-
-    public User(double budget, double monthlyExpense, double monthlyIncome, LinkedHashMap<String, Double> expenseTypeBudget , LinkedHashMap<String, Double> incomeTypeBudget) {
-        this.budget = budget;
-        this.monthlyExpense = monthlyExpense;
-        this.monthlyIncome = monthlyIncome;
-        this.incomeTypeBudget = incomeTypeBudget;
-        this.expenseTypeBudget = expenseTypeBudget;
-    }
-
-    public User(double budget, double monthlyExpense, double monthlyIncome, ArrayList<String> expenseType, ArrayList<String> incomeType) {
-        this.budget = budget;
-        this.monthlyIncome = monthlyIncome;
-        this.monthlyExpense = monthlyExpense;
-        for(String string: expenseType){
-            expenseTypeBudget.put(string, 0.0);
-        }
-        for(String string: incomeType){
-            incomeTypeBudget.put(string, 0.0);
-        }
-        this.incomeType = incomeType;
-        this.expenseType = expenseType;
+        defaultIncomeTypeBudget = new LinkedHashMap<String, Double>(){
+            {
+                put(context.getResources().getString(R.string.salary), 0.0);
+                put(context.getResources().getString(R.string.other), 0.0);
+            }
+        };
+        incomeTypeBudget = new LinkedHashMap<String, Double>(defaultIncomeTypeBudget);
     }
 
     public double getMonthlyExpense() {
@@ -75,6 +57,14 @@ public class User {
 
     public LinkedHashMap<String, Double> getIncomeTypeBudgetMap() {
         return incomeTypeBudget;
+    }
+
+    public LinkedHashMap<String, Double> getDefaultExpenseTypeBudget() {
+        return defaultExpenseTypeBudget;
+    }
+
+    public LinkedHashMap<String, Double> getDefaultIncomeTypeBudget() {
+        return defaultIncomeTypeBudget;
     }
 
     public void setBudget(double budget) {

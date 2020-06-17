@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     Intent originalIntent;
@@ -36,8 +37,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         user = myDB.getUserInfo();
+
+        if (!myDB.getUserLanguage().equals(Locale.getDefault().getDisplayLanguage())){
+            myDB.setUserLanguage(Locale.getDefault().getDisplayLanguage());
+        }
+
         myDB.setUserLastActiveDate(Calendar.getInstance());
         updateButton();
     }

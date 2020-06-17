@@ -61,7 +61,7 @@ public class ChartActivity extends AppCompatActivity {
     ArrayList<Integer> yearList = new ArrayList<>();
     int selectedYear;
     boolean selectedIncome = false;
-    String selectedType = "All";
+    String selectedType;
     Spinner typeSpinner;
     Switch incomeSwitch;
 
@@ -76,6 +76,9 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+
+
+        selectedType = getResources().getString(R.string.all);
 
         intent = getIntent();
         chartIconView = findViewById(R.id.chart_iconView);
@@ -94,9 +97,9 @@ public class ChartActivity extends AppCompatActivity {
         settingButton.setOnClickListener(new settingButtonOnClickListener());
 
         expenseTypeList = myDB.getExpenseTypeList();
-        expenseTypeList.add(0,"All");
+        expenseTypeList.add(0,getResources().getString(R.string.all));
         incomeTypeList = myDB.getIncomeTypeList();
-        incomeTypeList.add(0, "All");
+        incomeTypeList.add(0, getResources().getString(R.string.all));
 
         initBarChart();
         showBarChart();
@@ -241,8 +244,8 @@ public class ChartActivity extends AppCompatActivity {
         }
 
         String title = "";
-        if(selectedType.equals("All")){
-            title = selectedYear + (selectedIncome?" Income":" Expense");
+        if(selectedType.equals(getResources().getString(R.string.all))){
+            title = selectedYear + " " + (selectedIncome? getResources().getString(R.string.income):getResources().getString(R.string.expense));
         }
         else{
             title = selectedYear + " " + selectedType;
@@ -267,7 +270,7 @@ public class ChartActivity extends AppCompatActivity {
             int month = data.getInt(3);
             String billType = data.getString(5);
             if (data.getInt(2) == year){
-                if(billType.equals(type) || type.equals("All")){
+                if(billType.equals(type) || type.equals(getResources().getString(R.string.all))){
                     if(income && amount > 0){
                         result.set(month, result.get(month) + Math.abs(amount));
                     }

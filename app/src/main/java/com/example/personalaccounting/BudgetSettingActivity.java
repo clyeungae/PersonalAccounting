@@ -57,13 +57,13 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
         myDB = new DatabaseHelper(this);
 
-        budgetTextView = (TextView) findViewById(R.id.userSetting_budget_view);
-        budgetInput = (EditText) findViewById(R.id.userSetting_budget_input);
-        submitButton = (Button) findViewById(R.id.userSetting_submit_button);
-        cancelButton = (Button) findViewById(R.id.userSetting_cancel_button);
+        budgetTextView = (TextView) findViewById(R.id.budgetSetting_budget_view);
+        budgetInput = (EditText) findViewById(R.id.budgetSetting_budget_input);
+        submitButton = (Button) findViewById(R.id.budgetSetting_submit_button);
+        cancelButton = (Button) findViewById(R.id.budgetSetting_cancel_button);
 
-        expenseTypeTable = (TableLayout) findViewById(R.id.userSetting_expenseType_table);
-        incomeTypeTable = (TableLayout) findViewById(R.id.userSetting_incomeType_table);
+        expenseTypeTable = (TableLayout) findViewById(R.id.budgetSetting_expenseType_table);
+        incomeTypeTable = (TableLayout) findViewById(R.id.budgetSetting_incomeType_table);
         submitButton.setOnClickListener(new submitButtonOnClickListener());
         cancelButton.setOnClickListener(new cancelButtonOnClickListener());
 
@@ -333,7 +333,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
                     }
                 }
             }
-            Toast.makeText(BudgetSettingActivity.this, R.string.ChangeUserSettingSuccessMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(BudgetSettingActivity.this, R.string.ChangeBudgetSettingSuccessMessage, Toast.LENGTH_SHORT).show();
             finish();
         }
     }

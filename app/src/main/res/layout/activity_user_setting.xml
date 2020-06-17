@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_title_height"
+        android:text="@string/userSetting_title"
+        android:textColor="@color/main_view"
+        android:textSize="@dimen/general_title_text_size"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:id="@+id/userSetting_title"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/userSetting_title"
+        android:layout_alignParentBottom="true">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:text="@string/darkTheme"
+                    android:gravity="center"/>
+                <Switch
+                    android:layout_weight="1"
+                    android:id="@+id/userSetting_darkThemeSwitch"/>
+
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

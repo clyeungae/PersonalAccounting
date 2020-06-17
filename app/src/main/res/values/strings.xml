@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">PersonalAccounting</string>
+    <string name="clothing">Clothing</string>
+    <string name="food">Food</string>
+    <string name="transport">Transport</string>
+    <string name="housing">Housing</string>
+    <string name="other">Other</string>
+    <string name="salary">Salary</string>
     <string name="submit_button">Submit</string>
     <string name="cancel_button">Cancel</string>
     <string name="budget_remain">Budget Remain</string>
@@ -13,11 +19,8 @@
     <string name="NoBillRecordMessage">No bill record</string>
     <string name="EmptyBillMessage">Amount cannot be empty</string>
     <string name="AmountEqualToZeroMessage">Amount cannot be zero</string>
-    <string name="ChangeUserSettingSuccessMessage">Setting successfully changed</string>
+    <string name="ChangeBudgetSettingSuccessMessage">Setting successfully changed</string>
     <string name="BillRecordNotFoundMessage">Cannot find bill record</string>
-    <string name="nav_home_title">Home</string>
-    <string name="nav_chart_title">Chart</string>
-    <string name="nav_setting_title">Setting</string>
     <string name="bill_title">New Bill</string>
     <string name="billUpdate_title">Bill Detail</string>
     <string name="budgetSetting_title">Budget Setting</string>
@@ -42,6 +45,13 @@
     <string name="income_summary">Income Summary</string>
     <string name="chart_title">Chart</string>
     <string name="year">Year</string>
+    <string name="userSetting_title">User Setting</string>
+    <string name="language">Language</string>
+    <string name="darkTheme">Dark Theme</string>
+    <string name="chinese">Chinese</string>
+    <string name="english">English</string>
+    <string name="setting_title">Setting</string>
+    <string name="all">All</string>
     <string-array name="monthArray">
         <item>Jan</item>
         <item>Feb</item>
