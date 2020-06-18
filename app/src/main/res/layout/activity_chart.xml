@@ -13,46 +13,114 @@
         android:textColor="@color/main_view"
         android:gravity="center"/>
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_above="@id/chart_iconView"
+        android:layout_below="@id/chart_title"
+        android:layout_alignParentRight="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pieChart_view"
+        android:visibility="invisible"
+        style="@style/Dusk"/>
     <com.github.mikephil.charting.charts.BarChart
-        android:layout_above="@id/chart_parameter_table"
+        android:layout_above="@id/chart_iconView"
         android:layout_below="@id/chart_title"
         android:layout_alignParentRight="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/barChart_view"
+        android:visibility="invisible"
         style="@style/Dusk"/>
 
-    <HorizontalScrollView
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/chart_icon_view_height"
         android:id="@+id/chart_iconView"
-        android:layout_below="@id/barChart_view"
-        android:layout_above="@id/chart_parameter_table"
-        />
+        android:layout_above="@id/chart_parameter_table">
+        <TableRow
+            android:weightSum="2">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/chart_icon_view_height"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_bar_chart_24"
+                android:id="@+id/barChart_icon"
+                style="@style/Dusk"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/chart_icon_view_height"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_pie_chart_24"
+                android:id="@+id/pieChart_icon"
+                style="@style/Dusk"/>
+        </TableRow>
 
-        <TableLayout
-            android:layout_height="@dimen/chart_parameter_height"
-            android:layout_width="match_parent"
-            android:layout_above="@id/bottom_nav"
-            android:id="@+id/chart_parameter_table">
-            <TableRow>
-                <TextView
-                    android:layout_height="@dimen/general_column_height"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/income"
-                    android:gravity="center"/>
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/general_column_height"
-                    android:id="@+id/chart_incomeSwitch"
-                    android:layout_weight="1"
-                    android:textOn="@string/income"
-                    android:textOff="@string/expense"
-                    android:showText="true"
-                    style="@style/Dusk"/>
-            </TableRow>
-        </TableLayout>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_height="@dimen/chart_parameter_height"
+        android:layout_width="match_parent"
+        android:layout_above="@id/bottom_nav"
+        android:id="@+id/chart_parameter_table">
+
+        <TableRow
+            android:weightSum="6">
+
+            <TextView
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:text="@string/year"
+                android:gravity="center"/>
+            <Spinner
+                android:id="@+id/chart_yearSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/general_column_height"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:text="@string/month"
+                android:gravity="center"/>
+            <Spinner
+                android:id="@+id/chart_monthSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/general_column_height"
+                android:gravity="center"
+                android:layout_weight="1"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/income"
+                android:gravity="center"/>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/general_column_height"
+                android:id="@+id/chart_incomeSwitch"
+                android:layout_weight="1"
+                android:textOn="@string/income"
+                android:textOff="@string/expense"
+                android:showText="true"
+                style="@style/Dusk"/>
+            <TextView
+                android:layout_height="@dimen/general_column_height"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/type"
+                android:gravity="center"/>
+            <Spinner
+                android:id="@+id/chart_typeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/general_column_height"
+                android:gravity="center"
+                android:layout_weight="1"/>
+        </TableRow>
+    </TableLayout>
 
     <TableLayout
         android:id="@+id/bottom_nav"

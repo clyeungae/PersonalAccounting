@@ -21,7 +21,7 @@
     <dimen name="setting_button_height">150dp</dimen>
     <dimen name="budgetSetting_button_margin">10dp</dimen>
     <dimen name="billUpdate_button_margin">30dp</dimen>
-    <dimen name="chart_parameter_height">200dp</dimen>
+    <dimen name="chart_parameter_height">180dp</dimen>
     <dimen name="chart_icon_view_height">50dp</dimen>
     <dimen name="general_scroll_view">120dp</dimen>
 </resources>
