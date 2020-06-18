@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class ViewBillRecords extends AppCompatActivity {
 
@@ -54,22 +55,68 @@ public class ViewBillRecords extends AppCompatActivity {
                 int billYear = billRecords.getInt(2);
                 int billMonth = billRecords.getInt(3);
                 String billType = billRecords.getString(5);
+
+                if(Locale.getDefault().getDisplayLanguage().equals("English")){
+                    switch(billType){
+                        case"衣物":
+                            billType = getResources().getString(R.string.clothing);
+                            break;
+                        case"飲食":
+                            billType = getResources().getString(R.string.food);
+                            break;
+                        case"住屋":
+                            billType = getResources().getString(R.string.housing);
+                            break;
+                        case"交通":
+                            billType = getResources().getString(R.string.transport);
+                            break;
+                        case"其他":
+                            billType = getResources().getString(R.string.other);
+                            break;
+                        case"工資":
+                            billType = getResources().getString(R.string.salary);
+                            break;
+
+                    }
+                }
+                else if(Locale.getDefault().getDisplayLanguage().equals("中文")){
+                    switch(billType){
+                        case"Clothing":
+                            billType = getResources().getString(R.string.clothing);
+                            break;
+                        case"Food":
+                            billType = getResources().getString(R.string.food);
+                            break;
+                        case"Housing":
+                            billType = getResources().getString(R.string.housing);
+                            break;
+                        case"Transport":
+                            billType = getResources().getString(R.string.transport);
+                            break;
+                        case"Other":
+                            billType = getResources().getString(R.string.other);
+                            break;
+                        case"Salary":
+                            billType = getResources().getString(R.string.salary);
+                            break;
+
+                    }
+                }
+                Bill bill = new Bill(billRecords.getInt(0), amount,
+                        new GregorianCalendar(billYear, billMonth, billRecords.getInt(4)),
+                        billType,
+                        billRecords.getString(6));
+                myDB.updateBill(bill);
                 if(year != -1 && month != -1){
                     if ((amount > 0) == income && billYear == year && billMonth == month){
-                        if(type.equals("All") || type.equals(billType)){
-                            billArrayList.add(new Bill(billRecords.getInt(0), billRecords.getDouble(1),
-                                    new GregorianCalendar(billRecords.getInt(2), billRecords.getInt(3), billRecords.getInt(4)),
-                                    billRecords.getString(5),
-                                    billRecords.getString(6)));
+                        if(type.equals(getResources().getString(R.string.all)) || type.equals(billType)){
+                            billArrayList.add(bill);
                         }
 
                     }
                 }
                 else if((billRecords.getDouble(1) > 0) == income){
-                    billArrayList.add(new Bill(billRecords.getInt(0), billRecords.getDouble(1),
-                            new GregorianCalendar(billRecords.getInt(2), billRecords.getInt(3), billRecords.getInt(4)),
-                            billRecords.getString(5),
-                            billRecords.getString(6)));
+                    billArrayList.add(bill);
                 }
 
                 Collections.sort(billArrayList, new BillComparator());

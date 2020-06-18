@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
 
     <TextView
         android:layout_width="match_parent"
@@ -18,8 +19,7 @@
         android:layout_marginVertical="@dimen/setting_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_view"
-        android:layout_above="@id/bottom_nav">
+        android:layout_below="@id/title_view">
         <TableRow
             android:layout_weight="1">
             <ImageButton
@@ -29,7 +29,9 @@
                 android:layout_weight="1"
                 android:scaleType="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_baseline_monetization_on_24"/>
+                android:src="@drawable/ic_baseline_monetization_on_24"
+                style="@style/Dusk"
+                />
             <ImageButton
                 android:layout_weight="1"
                 android:layout_height="@dimen/setting_button_height"
@@ -37,7 +39,8 @@
                 android:id="@+id/userSetting_button"
                 android:scaleType="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_baseline_account_box_24"/>
+                android:src="@drawable/ic_baseline_account_box_24"
+                style="@style/Dusk"/>
         </TableRow>
         <TableRow
             android:layout_weight="1">

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,11 +83,13 @@ public class BudgetSettingActivity extends AppCompatActivity {
         addExpenseTypeImageButton = new ImageButton(this);
         addExpenseTypeImageButton.setImageResource(R.drawable.ic_baseline_add_box_24);
         addExpenseTypeImageButton.setOnClickListener(new addExpenseTypeImageButtonOnClickListener());
+        addExpenseTypeImageButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBackground));
         expenseTypeTable.addView(addExpenseTypeImageButton);
 
         addIncomeTypeImageButton = new ImageButton(this);
         addIncomeTypeImageButton.setImageResource(R.drawable.ic_baseline_add_box_24);
         addIncomeTypeImageButton.setOnClickListener(new addIncomeTypeImageButtonOnClickListener());
+        addIncomeTypeImageButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBackground));
         incomeTypeTable.addView(addIncomeTypeImageButton);
     }
 

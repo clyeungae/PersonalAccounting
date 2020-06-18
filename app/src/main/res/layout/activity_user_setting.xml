@@ -20,7 +20,57 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:text="@string/language"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:id="@+id/userSetting_languageTextView"
+                    android:gravity="center"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:text="@string/start_date"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:id="@+id/userSetting_startDateTextView"
+                    android:gravity="center"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:text="@string/last_active_date"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:id="@+id/userSetting_lastActiveDateTextView"
+                    android:gravity="center"/>
+            </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

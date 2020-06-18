@@ -251,7 +251,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         User user = new User(context);
         SQLiteDatabase db = this.getWritableDatabase();
 
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_TABLE_COL2, user.getBudget());
         contentValues.put(USER_TABLE_COL3, user.getMonthlyExpense());
@@ -292,7 +291,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_TABLE_COL11, string);
         db.update(USER_TABLE_NAME, contentValues,null, null);
+        updateTypeLanguage(string);
+    }
 
+    private void updateTypeLanguage(String string){
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues languageContentValues = new ContentValues();
         if(string.equals("English")){
             languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.clothing));
@@ -353,8 +356,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             languageContentValues.put(INCOME_TYPE_TABLE_COL2, context.getResources().getString(R.string.other));
             db.update(INCOME_TYPE_TABLE_NAME, languageContentValues, INCOME_TYPE_TABLE_COL2 +" = ?", new String[]{"Other"});
         }
-
     }
+
 
     public User getUserInfo(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -387,31 +390,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Calendar getUserStartDate(){
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
-            Calendar calendar = Calendar.getInstance();
-            if(data.moveToFirst()){
 
-                calendar.set(data.getInt(4), data.getInt(5), data.getInt(6));
-            }
-            return calendar;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        if(data.moveToFirst()){
+            return new GregorianCalendar(data.getInt(4), data.getInt(5), data.getInt(6));
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
         return null;
+
     }
 
     public Calendar getUserLastActiveDate(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
-        Calendar calendar = Calendar.getInstance();
         if(data.moveToFirst()){
-            calendar.set(data.getInt(7), data.getInt(8), data.getInt(9));
+            return new GregorianCalendar(data.getInt(7), data.getInt(8), data.getInt(9));
         }
-        return calendar;
+        return null;
     }
 
     public void setUserLastActiveDate(Calendar calendar){

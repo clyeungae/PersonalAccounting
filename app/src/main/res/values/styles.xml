@@ -1,10 +1,12 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+    <style name="Dusk" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:positiveButtonText">@color/textColor</item>
+        <item name="android:textColorPrimary">@color/textColor</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/textColor</item>
+        <item name="colorSwitchThumbNormal">@color/switchThumbNormal</item>
     </style>
-
 </resources>

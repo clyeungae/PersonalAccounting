@@ -53,6 +53,10 @@
     <string name="chinese">中文</string>
     <string name="english">英文</string>
     <string name="all">全部</string>
+    <string name="start_date">開始使用日期</string>
+    <string name="last_active_date">最後使用日期</string>
+    <string name="general">一般模式</string>
+    <string name="dark_mode">黑暗模式</string>
     <string-array name="monthArray">
         <item>一月</item>
         <item>二月</item>

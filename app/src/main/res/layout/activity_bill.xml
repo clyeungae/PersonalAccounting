@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:shrinkColumns="false"
-        android:collapseColumns="false">
+        android:collapseColumns="false"
+        android:layout_above="@id/bottom_nav">
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
@@ -98,13 +99,15 @@
             android:layout_width="375dp"
             android:layout_height="@dimen/main_budgetRemainButton_height"
             android:text="@string/submit_button"
-            android:textSize="@dimen/bill_submitButton_text" />
+            android:textSize="@dimen/bill_submitButton_text"
+            style="@style/Dusk"/>
     </TableLayout>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_height"
         android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_nav"
         android:shrinkColumns="false"
         android:stretchColumns="false">
         <TableRow>
@@ -113,19 +116,22 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/chart_button"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_insert_chart_24"/>
+                android:src="@drawable/ic_baseline_insert_chart_24"
+                style="@style/Dusk"/>
             <ImageButton
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:id="@+id/home_button"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_home_24"/>
+                android:src="@drawable/ic_baseline_home_24"
+                style="@style/Dusk"/>
             <ImageButton
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:id="@+id/setting_button"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_settings_24"/>
+                android:src="@drawable/ic_baseline_settings_24"
+                style="@style/Dusk"/>
 
         </TableRow>
     </TableLayout>

@@ -141,25 +141,6 @@ public class ChartActivity extends AppCompatActivity {
         yearRow.addView(yearSpinner);
         chartParameterTable.addView(yearRow);
 
-        TableRow incomeSwitchRow = new TableRow(getApplicationContext());
-        incomeSwitchRow.setWeightSum(PARAMETER_ROW_WEIGHT_SUM);
-
-        TextView switchText = new TextView(getApplicationContext());
-        switchText.setText(getResources().getString(R.string.income));
-        switchText.setTextSize(PARAMETER_TEXT_SIZE);
-        switchText.setGravity(Gravity.CENTER);
-        switchText.setLayoutParams(rowParams);
-
-        incomeSwitch = new Switch(getApplicationContext());
-        incomeSwitch.setTextOff(getResources().getString(R.string.expense));
-        incomeSwitch.setTextOn(getResources().getString(R.string.income));
-        incomeSwitch.setShowText(true);
-        incomeSwitch.setOnCheckedChangeListener(new incomeSwitchOnCheckedChangeListener());
-
-        incomeSwitchRow.addView(switchText);
-        incomeSwitchRow.addView(incomeSwitch);
-        chartParameterTable.addView(incomeSwitchRow);
-
         TableRow typeRow = new TableRow(getApplicationContext());
         typeRow.setWeightSum(PARAMETER_ROW_WEIGHT_SUM);
 
@@ -181,7 +162,6 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private void initBarChart(){
-        barChart.setBackgroundColor(ContextCompat.getColor(this, R.color.chart_background));
         barChart.setDrawGridBackground(false);
         barChart.setDrawBarShadow(false);
         barChart.setHighlightFullBarEnabled(false);
