@@ -536,6 +536,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(USER_TABLE_NAME, contentValues,null, null);
     }
 
+    public void updateExpenseTypeName(String originalName, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EXPENSE_TYPE_TABLE_COL2, newName);
+        db.update(EXPENSE_TYPE_TABLE_NAME, contentValues, EXPENSE_TYPE_TABLE_COL2 + "=?", new String[]{originalName});
+
+        contentValues.clear();
+        contentValues.put(BILL_TABLE_COL6, newName);
+        db.update(BILL_TABLE_NAME, contentValues, BILL_TABLE_COL2 + "< 0 AND " + BILL_TABLE_COL6 + "=?", new String[]{originalName});
+    }
+
+    public void updateIncomeTypeName(String originalName, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(INCOME_TYPE_TABLE_COL2, newName);
+        db.update(INCOME_TYPE_TABLE_NAME, contentValues, INCOME_TYPE_TABLE_COL2 + "=?", new String[]{originalName});
+
+        contentValues.clear();
+        contentValues.put(BILL_TABLE_COL6, newName);
+        db.update(BILL_TABLE_NAME, contentValues, BILL_TABLE_COL2 + "> 0 AND " + BILL_TABLE_COL6 + "=?", new String[]{originalName});
+    }
+
+    public void updateIncomeTypeBudget(String type, double budget){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(INCOME_TYPE_TABLE_COL3, budget);
+        String[] updateType = {type};
+        db.update(INCOME_TYPE_TABLE_NAME, contentValues, INCOME_TYPE_TABLE_COL2 + " = ?" , updateType);
+
+
+    }
+
     public void updateExpenseTypeBudget(String type, double budget){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

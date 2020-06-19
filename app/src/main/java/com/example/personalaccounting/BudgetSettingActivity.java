@@ -50,6 +50,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
     int imageButtonId = 6000;
     int tableRowId = 11000;
     int newTypeBudgetId = 16000;
+    int newTypeNameId = 21000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +68,6 @@ public class BudgetSettingActivity extends AppCompatActivity {
         incomeTypeTable = (TableLayout) findViewById(R.id.budgetSetting_incomeType_table);
         submitButton.setOnClickListener(new submitButtonOnClickListener());
         cancelButton.setOnClickListener(new cancelButtonOnClickListener());
-
     }
 
     @Override
@@ -99,9 +99,10 @@ public class BudgetSettingActivity extends AppCompatActivity {
         for(String string: stringArrayList){
             TableRow tableRow = new TableRow(this);
             CheckBox checkBox = new CheckBox(this);
+            EditText newTypeName = new EditText(this);
             EditText budgetInput = new EditText(this);
 
-            tableRow.setWeightSum(2.0f);
+            tableRow.setWeightSum(3.0f);
 
             TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT,1.0f);
             checkBox.setLayoutParams(rowParams);
@@ -111,12 +112,20 @@ public class BudgetSettingActivity extends AppCompatActivity {
             result.add(originalTypeId++);
             checkBox.setOnCheckedChangeListener( new checkBoxOnCheckedChangeListener());
 
+            newTypeName.setLayoutParams(rowParams);
+            newTypeName.setGravity(Gravity.CENTER);
+            newTypeName.setHint(string);
+            newTypeName.setId(newTypeNameId++);
+
             budgetInput.setLayoutParams(rowParams);
+            budgetInput.setGravity(Gravity.CENTER);
+            budgetInput.setGravity(Gravity.CENTER);
             budgetInput.setHint(String.valueOf(budgetMap.getOrDefault(string, 0.0)));
             budgetInput.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
             budgetInput.setId(originalTypeBudgetId++);
 
             tableRow.addView(checkBox);
+            tableRow.addView(newTypeName);
             tableRow.addView(budgetInput);
             tableLayout.addView(tableRow);
         }
@@ -279,7 +288,6 @@ public class BudgetSettingActivity extends AppCompatActivity {
                 myDB.updateUserBudget(Double.valueOf(entry));
 
             }
-
             //check delete type
             if(removeExpenseTypeList.size() > 0){
                 myDB.deleteExpenseType(removeExpenseTypeList);
@@ -298,9 +306,34 @@ public class BudgetSettingActivity extends AppCompatActivity {
                     if(budgetString.length() > 0){
                         myDB.updateExpenseTypeBudget(checkBox.getText().toString(),Double.valueOf(budgetString));
                     }
-                }
 
+                    EditText typeNameText = (EditText) findViewById(id + 20900);
+                    String newTypeName = typeNameText.getText().toString();
+                    if(newTypeName.length() > 0){
+                        myDB.updateExpenseTypeName(checkBox.getText().toString(), newTypeName);
+                    }
+
+                }
             }
+
+            for(int id : incomeTypeList){
+                CheckBox checkBox = (CheckBox) findViewById(id);
+                if(!removeIncomeTypeList.contains(checkBox.getText().toString())){
+                    EditText budgetEditText = (EditText) findViewById(id + 400);
+                    String budgetString = budgetEditText.getText().toString();
+                    if(budgetString.length() > 0){
+                        myDB.updateIncomeTypeBudget(checkBox.getText().toString(),Double.valueOf(budgetString));
+                    }
+
+                    EditText typeNameText = (EditText) findViewById(id + 20900);
+                    String newTypeName = typeNameText.getText().toString();
+                    if(newTypeName.length() > 0){
+                        myDB.updateIncomeTypeName(checkBox.getText().toString(), newTypeName);
+                    }
+                }
+            }
+            //check change budget name
+
             //check add type
             if(addExpenseTypeEditTextList.size() > 0){
                 for(EditText expenseType : addExpenseTypeEditTextList){
