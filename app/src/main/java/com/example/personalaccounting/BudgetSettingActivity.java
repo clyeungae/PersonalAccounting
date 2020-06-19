@@ -142,38 +142,38 @@ public class BudgetSettingActivity extends AppCompatActivity {
             TableRow tableRow = new TableRow(getApplicationContext());
             ImageButton imageButton = new ImageButton(getApplicationContext());
             EditText expenseType = new EditText(getApplicationContext());
-            EditText expenseBudget = new EditText(getApplicationContext());
+            EditText expenseTypeBudget = new EditText(getApplicationContext());
 
             tableRow.setWeightSum(3f);
             TableRow.LayoutParams rowParams  = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1.0f);
 
+            expenseType.setHint(R.string.addNewType);
             expenseType.setSingleLine();
             expenseType.setLayoutParams(rowParams);
-            expenseType.setHint(R.string.addNewType);
 
             imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
             imageButton.setOnClickListener(new removeExpenseTypeImageButtonOnClickListener());
             imageButton.setLayoutParams(rowParams);
+            imageButton.setBackgroundColor(ContextCompat.getColor(BudgetSettingActivity.this, R.color.colorBackground));
 
-            expenseBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            expenseBudget.setSingleLine();
-            expenseBudget.setLayoutParams(rowParams);
-            expenseBudget.setHint(R.string.budget);
-
+            expenseTypeBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            expenseTypeBudget.setHint(R.string.budget);
+            expenseTypeBudget.setSingleLine();
+            expenseTypeBudget.setLayoutParams(rowParams);
 
             imageButton.setId(imageButtonId++);
             expenseType.setId(newTypeId++);
             tableRow.setId(tableRowId++);
-            expenseBudget.setId(newTypeBudgetId++);
+            expenseTypeBudget.setId(newTypeBudgetId++);
+
             addExpenseTypeEditTextList.add(expenseType);
 
             tableRow.addView(imageButton);
             tableRow.addView(expenseType);
-            tableRow.addView(expenseBudget);
+            tableRow.addView(expenseTypeBudget);
 
             expenseTypeTable.addView(tableRow);
             expenseTypeTable.addView(addExpenseTypeImageButton);
-
         }
     }
 
@@ -205,7 +205,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
             EditText incomeTypeBudget = new EditText(getApplicationContext());
 
             tableRow.setWeightSum(3f);
-            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT,1.0f);
 
             incomeType.setHint(R.string.addNewType);
             incomeType.setSingleLine();
@@ -214,12 +214,12 @@ public class BudgetSettingActivity extends AppCompatActivity {
             imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
             imageButton.setOnClickListener(new removeIncomeTypeImageButtonOnClickListener());
             imageButton.setLayoutParams(rowParams);
+            imageButton.setBackgroundColor(ContextCompat.getColor(BudgetSettingActivity.this, R.color.colorBackground));
 
             incomeTypeBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             incomeTypeBudget.setHint(R.string.budget);
             incomeTypeBudget.setSingleLine();
             incomeTypeBudget.setLayoutParams(rowParams);
-
 
             tableRow.setId(tableRowId++);
             imageButton.setId(imageButtonId++);

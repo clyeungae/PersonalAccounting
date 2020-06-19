@@ -21,8 +21,7 @@ public class ViewBillRecords extends AppCompatActivity {
     DatabaseHelper myDB;
     private BillArrayAdapter billArrayAdapter;
     boolean income;
-    int year;
-    int month;
+    int year, month, date;
     String type = "All";
     ListView listView;
 
@@ -36,6 +35,7 @@ public class ViewBillRecords extends AppCompatActivity {
         income = intent.getBooleanExtra("income", false);
         year = intent.getIntExtra("year", -1);
         month = intent.getIntExtra("month", -1);
+        date = intent.getIntExtra("date", -1);
         type = intent.getStringExtra("type");
         listView = (ListView) findViewById(R.id.billrecords_view);
         myDB = new DatabaseHelper(this);
@@ -54,6 +54,7 @@ public class ViewBillRecords extends AppCompatActivity {
                 double amount = billRecords.getDouble(1);
                 int billYear = billRecords.getInt(2);
                 int billMonth = billRecords.getInt(3);
+                int billDate = billRecords.getInt(4);
                 String billType = billRecords.getString(5);
 
                 if(Locale.getDefault().getDisplayLanguage().equals("English")){
@@ -102,21 +103,29 @@ public class ViewBillRecords extends AppCompatActivity {
 
                     }
                 }
+
                 Bill bill = new Bill(billRecords.getInt(0), amount,
                         new GregorianCalendar(billYear, billMonth, billRecords.getInt(4)),
                         billType,
                         billRecords.getString(6));
                 myDB.updateBill(bill);
-                if(year != -1 && month != -1){
-                    if ((amount > 0) == income && billYear == year && billMonth == month){
-                        if(type.equals(getResources().getString(R.string.all)) || type.equals(billType)){
+                //the bill fit the income/expense and required type/ all type
+                if((amount > 0) == income &&(type.equals(getResources().getString(R.string.all)) || type.equals(billType))){
+                    if(year == -1){
+                        billArrayList.add(bill);
+                    }
+                    else if (year == billYear){
+                        //required year fit
+                        if(month == -1){
                             billArrayList.add(bill);
                         }
-
+                        else if (month == billMonth){
+                            //required month fit
+                            if(date == -1 || date == billDate){
+                                billArrayList.add(bill);
+                            }
+                        }
                     }
-                }
-                else if((billRecords.getDouble(1) > 0) == income){
-                    billArrayList.add(bill);
                 }
 
                 Collections.sort(billArrayList, new BillComparator());

@@ -134,6 +134,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getBillWithYear(int year){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + BILL_TABLE_NAME + " WHERE " + BILL_TABLE_COL3 + " = ? " , new String[]{String.valueOf(year)});
+    }
+
     public Cursor getBillWithYearAndMonth(int year, int month){
         SQLiteDatabase db = this.getReadableDatabase();
         String[] target = new String[]{String.valueOf(year), String.valueOf(month)};

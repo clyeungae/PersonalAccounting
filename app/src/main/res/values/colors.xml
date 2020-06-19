@@ -9,5 +9,27 @@
     <color name="main_view">#000000</color>
     <color name="expense">#D15006</color>
     <color name="income">#1F7547</color>
-
+    <color name="pieChartHole">#605685</color>
+    <array name="pieChartColorArray">
+        <item>#4B7BA6</item>
+        <item>#8E68D9</item>
+        <item>#A0BED9</item>
+        <item>#D2D9C7</item>
+        <item>#A66641</item>
+        <item>#03588C</item>x
+        <item>#D5D0D9</item>
+        <item>#968FA6</item>
+        <item>#F26B8F</item>
+        <item>#A3C9D9</item>
+        <item>#F2B47E</item>
+        <item>#8C5245</item>
+        <item>#EFC3C0</item>
+        <item>#260F01</item>
+        <item>#01260E</item>
+        <item>#D5DFDF</item>
+        <item>#50BFA0</item>
+        <item>#590F0F</item>
+        <item>#F2F2F2</item>
+        <item>#90D93D</item>
+    </array>
 </resources>
