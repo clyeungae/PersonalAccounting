@@ -2,6 +2,7 @@ package com.example.personalaccounting;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -11,9 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -32,14 +30,20 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -142,6 +146,9 @@ public class ChartActivity extends AppCompatActivity {
 
     private void initPieChart(){
         barChart.setVisibility(View.INVISIBLE);
+        typeSpinner.setEnabled(false);
+        selectedBarChart = false;
+
         pieChart.setVisibility(View.VISIBLE);
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
@@ -150,12 +157,17 @@ public class ChartActivity extends AppCompatActivity {
         pieChart.setRotationEnabled(true);
         pieChart.setHighlightPerTapEnabled(true);
         pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        pieChart.setHoleColor(ContextCompat.getColor(this, R.color.pieChartHole));
 
+        pieChart.setOnChartValueSelectedListener(new pieChartOnChartValueSelectedListener());
 
     }
 
     private void initBarChart(){
         pieChart.setVisibility(View.INVISIBLE);
+        typeSpinner.setEnabled(true);
+        selectedBarChart = true;
+
         barChart.setVisibility(View.VISIBLE);
         barChart.setDrawGridBackground(false);
         barChart.setDrawBarShadow(false);
@@ -205,6 +217,60 @@ public class ChartActivity extends AppCompatActivity {
 
     }
 
+    private void showPieChart(){
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+
+        StringBuilder label = new StringBuilder(selectedYear + " ");
+        LinkedHashMap<String, Double> typeAmountMap = new LinkedHashMap<>();
+
+
+        Cursor data;
+        if(selectedMonth == -1){
+            data = myDB.getBillWithYear(selectedYear);
+        }
+        else{
+            String[] monthArray = getResources().getStringArray(R.array.monthArray);
+            data = myDB.getBillWithYearAndMonth(selectedYear, selectedMonth);
+            label.append(monthArray[selectedMonth] + " ");
+        }
+        label.append(getResources().getString(selectedIncome?R.string.income:R.string.expense));
+        while(data.moveToNext()){
+            Double amount = data.getDouble(1);
+            if(selectedIncome == ( amount > 0)){
+                String type = data.getString(5);
+                if(typeAmountMap.containsKey(type)){
+                    typeAmountMap.replace(type, typeAmountMap.get(type) + Math.abs(amount));
+                }
+                else{
+                    typeAmountMap.put(type, Math.abs(amount));
+                }
+
+            }
+        }
+
+        for(String type: typeAmountMap.keySet()){
+            pieEntries.add(new PieEntry(typeAmountMap.get(type).floatValue(), type));
+        }
+
+        int[] colorArray = Arrays.copyOfRange(getResources().getIntArray(R.array.pieChartColorArray),0,typeAmountMap.size());
+        ArrayList<Integer> colors = new ArrayList<>();
+        for(int color:colorArray){
+            colors.add(color);
+        }
+
+
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,label.toString());
+        pieDataSet.setValueTextSize(12f);
+        pieDataSet.setColors(colors);
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setDrawValues(true);
+        pieData.setValueFormatter(new PercentFormatter());
+
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+    }
+
     private void showBarChart(){
         final String[] monthArray = getResources().getStringArray(R.array.monthArray);
 
@@ -234,10 +300,9 @@ public class ChartActivity extends AppCompatActivity {
         }
         else{
              dateValueList = getBillDataOfYear();
-
         }
 
-        if(selectedMonth < 0 || selectedMonth > 11){
+        if(selectedMonth >= 0 && selectedMonth <= 11){
             xAxis.setValueFormatter(new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
@@ -246,7 +311,6 @@ public class ChartActivity extends AppCompatActivity {
             });
         }
         else{
-            /*
             xAxis.setValueFormatter(new IAxisValueFormatter() {
 
                 @Override
@@ -254,8 +318,6 @@ public class ChartActivity extends AppCompatActivity {
                     return  monthArray[(int) value];
                 }
             });
-
-             */
         }
 
         if(selectedType.equals(getResources().getString(R.string.all))){
@@ -276,6 +338,7 @@ public class ChartActivity extends AppCompatActivity {
         BarData data = new BarData(barDataSet);
         data.setBarWidth(0.5f);
         barChart.setData(data);
+        barChart.invalidate();
     }
 
     private ArrayList<Double> getMonthlyBillDataOfYear(int numberOfDays){
@@ -329,7 +392,8 @@ public class ChartActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            recreate();
+           initBarChart();
+           showBarChart();
         }
     }
 
@@ -337,7 +401,8 @@ public class ChartActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-
+            initPieChart();
+            showPieChart();
         }
     }
 
@@ -353,8 +418,30 @@ public class ChartActivity extends AppCompatActivity {
                 typeSpinner.setAdapter(new ArrayAdapter<>(ChartActivity.this, android.R.layout.simple_spinner_item, expenseTypeList));
                 selectedIncome = false;
             }
+
         }
     }
+
+    private class pieChartOnChartValueSelectedListener implements OnChartValueSelectedListener{
+
+        @Override
+        public void onValueSelected(Entry e, Highlight h) {
+            Intent intent = new Intent(ChartActivity.this, ViewBillRecords.class);
+            intent.putExtra("year", selectedYear);
+            intent.putExtra("income", selectedIncome);
+            intent.putExtra("month", selectedMonth);
+            PieEntry pieEntry =(PieEntry) e;
+            selectedType = pieEntry.getLabel();
+            intent.putExtra("type", selectedType);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onNothingSelected() {
+
+        }
+    }
+
     private class barChartOnChartValueSelectedListener implements OnChartValueSelectedListener{
 
         @Override
@@ -362,7 +449,13 @@ public class ChartActivity extends AppCompatActivity {
             Intent intent = new Intent(ChartActivity.this, ViewBillRecords.class);
             intent.putExtra("year", selectedYear);
             intent.putExtra("income", selectedIncome);
-            intent.putExtra("month", (int) e.getX());
+            if(selectedMonth == -1){
+                intent.putExtra("month", (int) e.getX());
+            }
+            else{
+                intent.putExtra("month", selectedMonth);
+                intent.putExtra("date", (int) e.getX()+ 1);
+            }
             intent.putExtra("type", selectedType);
             startActivity(intent);
 
@@ -378,8 +471,15 @@ public class ChartActivity extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
             selectedType = adapterView.getItemAtPosition(position).toString();
-            initBarChart();
-            showBarChart();
+            if(selectedBarChart){
+                initBarChart();
+                showBarChart();
+            }
+            else{
+                initPieChart();
+                showPieChart();
+            }
+
         }
 
         @Override
@@ -398,6 +498,10 @@ public class ChartActivity extends AppCompatActivity {
                 initBarChart();
                 showBarChart();
             }
+            else{
+                initPieChart();
+                showPieChart();
+            }
 
         }
 
@@ -407,6 +511,10 @@ public class ChartActivity extends AppCompatActivity {
             if(selectedBarChart){
                 initBarChart();
                 showBarChart();
+            }
+            else{
+                initPieChart();
+                showPieChart();
             }
         }
     }
@@ -419,6 +527,10 @@ public class ChartActivity extends AppCompatActivity {
             if(selectedBarChart){
                 initBarChart();
                 showBarChart();
+            }
+            else{
+                initPieChart();
+                showPieChart();
             }
 
         }
