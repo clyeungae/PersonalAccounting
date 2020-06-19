@@ -87,6 +87,8 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
         expenseTypeList = myDB.getExpenseTypeList();
         incomeTypeList = myDB.getIncomeTypeList();
 
+
+
         typeSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, expenseTypeList.toArray()));
         typeSpinner.setOnItemSelectedListener(this);
 

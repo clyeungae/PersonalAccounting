@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SettingActivity extends AppCompatActivity {
 
     private ImageButton accountSettingButton;
+    private ImageButton userSettingButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -18,13 +19,21 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         accountSettingButton = findViewById(R.id.accountSetting_button);
-
+        userSettingButton = findViewById(R.id.userSetting_button);
 
         accountSettingButton.setOnClickListener(new accountSettingButtonOnClickListener());
-
+        userSettingButton.setOnClickListener(new userSettingButtonOnClickListener());
     }
 
     private class accountSettingButtonOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(SettingActivity.this, BudgetSettingActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private class userSettingButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(SettingActivity.this, UserSettingActivity.class);

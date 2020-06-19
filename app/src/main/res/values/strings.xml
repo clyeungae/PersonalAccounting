@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">PersonalAccounting</string>
+    <string name="clothing">Clothing</string>
+    <string name="food">Food</string>
+    <string name="transport">Transport</string>
+    <string name="housing">Housing</string>
+    <string name="other">Other</string>
+    <string name="salary">Salary</string>
     <string name="submit_button">Submit</string>
     <string name="cancel_button">Cancel</string>
     <string name="budget_remain">Budget Remain</string>
@@ -13,15 +19,12 @@
     <string name="NoBillRecordMessage">No bill record</string>
     <string name="EmptyBillMessage">Amount cannot be empty</string>
     <string name="AmountEqualToZeroMessage">Amount cannot be zero</string>
-    <string name="ChangeUserSettingSuccessMessage">Setting successfully changed</string>
+    <string name="ChangeBudgetSettingSuccessMessage">Setting successfully changed</string>
     <string name="BillRecordNotFoundMessage">Cannot find bill record</string>
-    <string name="nav_home_title">Home</string>
-    <string name="nav_chart_title">Chart</string>
-    <string name="nav_setting_title">Setting</string>
     <string name="bill_title">New Bill</string>
     <string name="billUpdate_title">Bill Detail</string>
-    <string name="user_setting_title">User Setting</string>
-    <string name="user_setting_description">(Select to remove)</string>
+    <string name="budgetSetting_title">Budget Setting</string>
+    <string name="budgetSetting_description">(Check to remove)</string>
     <string name="expense_type">Expense Type</string>
     <string name="income_type">Income Type</string>
     <string name="income">Income</string>
@@ -42,18 +45,43 @@
     <string name="income_summary">Income Summary</string>
     <string name="chart_title">Chart</string>
     <string name="year">Year</string>
+    <string name="userSetting_title">User Setting</string>
+    <string name="language">Language</string>
+    <string name="darkTheme">Dark Theme</string>
+    <string name="chinese">Chinese</string>
+    <string name="english">English</string>
+    <string name="setting_title">Setting</string>
+    <string name="all">All</string>
+    <string name="start_date">Start Date</string>
+    <string name="last_active_date">Last Active Date</string>
+    <string name="general">General</string>
+    <string name="dark_mode">Dark</string>
+    <string name="month">Month</string>
+    <string name="not_available">N/A</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">Jul</string>
+    <string name="aug">Aug</string>
+    <string name="sep">Sep</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
     <string-array name="monthArray">
-        <item>Jan</item>
-        <item>Feb</item>
-        <item>Mar</item>
-        <item>Apr</item>
-        <item>May</item>
-        <item>Jun</item>
-        <item>Jul</item>
-        <item>Aug</item>
-        <item>Sep</item>
-        <item>Oct</item>
-        <item>Nov</item>
-        <item>Dec</item>
+        <item>@string/jan</item>
+        <item>@string/feb</item>
+        <item>@string/mar</item>
+        <item>@string/apr</item>
+        <item>@string/may</item>
+        <item>@string/jun</item>
+        <item>@string/jul</item>
+        <item>@string/aug</item>
+        <item>@string/sep</item>
+        <item>@string/oct</item>
+        <item>@string/nov</item>
+        <item>@string/dec</item>
     </string-array>
 </resources>

@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -38,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String USER_TABLE_COL8 = "LAST_ACTIVE_YEAR";
     public static final String USER_TABLE_COL9 = "LAST_ACTIVE_MONTH";
     public static final String USER_TABLE_COL10 = "LAST_ACTIVE_DAY_OF_MONTH";
-
+    public static final String USER_TABLE_COL11 = "LANGUAGE";
 
     public static final String EXPENSE_TYPE_TABLE_NAME = "expenseType";
     public static final String EXPENSE_TYPE_TABLE_COL2 = "EXPENSE_TYPE";
@@ -48,7 +49,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String INCOME_TYPE_TABLE_COL2 = "INCOME_TYPE";
     public static final String INCOME_TYPE_TABLE_COL3 = "BUDGET";
 
-    public DatabaseHelper(Context context){super(context, DATABASE_NAME,null,1);}
+    Context context;
+    public DatabaseHelper(Context context){
+        super(context, DATABASE_NAME,null,1);
+        this.context = context;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -71,7 +76,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     USER_TABLE_COL7 + " INTEGER, " +
                     USER_TABLE_COL8 + " INTEGER, " +
                     USER_TABLE_COL9 + " INTEGER, " +
-                    USER_TABLE_COL10 + " INTEGER) " ;
+                    USER_TABLE_COL10 + " INTEGER, " +
+                    USER_TABLE_COL11 + " TEXT) " ;
             sqLiteDatabase.execSQL(createUserTable);
 
             String createExpenseTypeTable = "CREATE TABLE " + EXPENSE_TYPE_TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -242,9 +248,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public User addUserInfo(){
-        User user = new User();
+        User user = new User(context);
         SQLiteDatabase db = this.getWritableDatabase();
-
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_TABLE_COL2, user.getBudget());
@@ -258,7 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(USER_TABLE_COL8, calendar.get(Calendar.YEAR));
         contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.MONTH));
         contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.DATE));
-
+        contentValues.put(USER_TABLE_COL11, Locale.getDefault().getDisplayLanguage());
         db.insert(USER_TABLE_NAME, null, contentValues);
 
         LinkedHashMap<String, Double> expenseMap = user.getExpenseTypeBudgetMap();
@@ -272,9 +277,91 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    public String getUserLanguage(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor userData = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
+        if(userData.moveToFirst()) {
+                return userData.getString(10);
+        }
+        return null;
+    }
+
+    public void setUserLanguage(String string){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_TABLE_COL11, string);
+        db.update(USER_TABLE_NAME, contentValues,null, null);
+        updateTypeLanguage(string);
+    }
+
+    private void updateTypeLanguage(String string){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues languageContentValues = new ContentValues();
+        if(string.equals("English")){
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.clothing));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"衣物"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.food));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"飲食"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.housing));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"住屋"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.transport));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"交通"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.other));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"其他"});
+
+
+            languageContentValues.clear();
+            languageContentValues.put(INCOME_TYPE_TABLE_COL2, context.getResources().getString(R.string.salary));
+            db.update(INCOME_TYPE_TABLE_NAME, languageContentValues, INCOME_TYPE_TABLE_COL2 +" = ?", new String[]{"工資"});
+
+            languageContentValues.clear();
+            languageContentValues.put(INCOME_TYPE_TABLE_COL2, context.getResources().getString(R.string.other));
+            db.update(INCOME_TYPE_TABLE_NAME, languageContentValues, INCOME_TYPE_TABLE_COL2 +" = ?", new String[]{"其他"});
+
+        }
+        else if(string.equals("中文")){
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.clothing));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"Clothing"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.food));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"Food"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.housing));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"Housing"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.transport));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"Transport"});
+
+            languageContentValues.clear();
+            languageContentValues.put(EXPENSE_TYPE_TABLE_COL2, context.getResources().getString(R.string.other));
+            db.update(EXPENSE_TYPE_TABLE_NAME, languageContentValues, EXPENSE_TYPE_TABLE_COL2 +" = ?", new String[]{"Other"});
+
+
+            languageContentValues.clear();
+            languageContentValues.put(INCOME_TYPE_TABLE_COL2, context.getResources().getString(R.string.salary));
+            db.update(INCOME_TYPE_TABLE_NAME, languageContentValues, INCOME_TYPE_TABLE_COL2 +" = ?", new String[]{"Salary"});
+
+            languageContentValues.clear();
+            languageContentValues.put(INCOME_TYPE_TABLE_COL2, context.getResources().getString(R.string.other));
+            db.update(INCOME_TYPE_TABLE_NAME, languageContentValues, INCOME_TYPE_TABLE_COL2 +" = ?", new String[]{"Other"});
+        }
+    }
+
+
     public User getUserInfo(){
         SQLiteDatabase db = this.getReadableDatabase();
-        User user = new User();
+        User user = new User(context);
         Cursor userData = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
         if(userData.moveToFirst()) {
             user.setBudget(userData.getDouble(1));
@@ -303,31 +390,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Calendar getUserStartDate(){
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
-            Calendar calendar = Calendar.getInstance();
-            if(data.moveToFirst()){
 
-                calendar.set(data.getInt(4), data.getInt(5), data.getInt(6));
-            }
-            return calendar;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        if(data.moveToFirst()){
+            return new GregorianCalendar(data.getInt(4), data.getInt(5), data.getInt(6));
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
         return null;
+
     }
 
     public Calendar getUserLastActiveDate(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
-        Calendar calendar = Calendar.getInstance();
         if(data.moveToFirst()){
-            calendar.set(data.getInt(7), data.getInt(8), data.getInt(9));
+            return new GregorianCalendar(data.getInt(7), data.getInt(8), data.getInt(9));
         }
-        return calendar;
+        return null;
     }
 
     public void setUserLastActiveDate(Calendar calendar){
@@ -455,6 +534,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_TABLE_COL3, expense);
         db.update(USER_TABLE_NAME, contentValues,null, null);
+    }
+
+    public void updateExpenseTypeName(String originalName, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EXPENSE_TYPE_TABLE_COL2, newName);
+        db.update(EXPENSE_TYPE_TABLE_NAME, contentValues, EXPENSE_TYPE_TABLE_COL2 + "=?", new String[]{originalName});
+
+        contentValues.clear();
+        contentValues.put(BILL_TABLE_COL6, newName);
+        db.update(BILL_TABLE_NAME, contentValues, BILL_TABLE_COL2 + "< 0 AND " + BILL_TABLE_COL6 + "=?", new String[]{originalName});
+    }
+
+    public void updateIncomeTypeName(String originalName, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(INCOME_TYPE_TABLE_COL2, newName);
+        db.update(INCOME_TYPE_TABLE_NAME, contentValues, INCOME_TYPE_TABLE_COL2 + "=?", new String[]{originalName});
+
+        contentValues.clear();
+        contentValues.put(BILL_TABLE_COL6, newName);
+        db.update(BILL_TABLE_NAME, contentValues, BILL_TABLE_COL2 + "> 0 AND " + BILL_TABLE_COL6 + "=?", new String[]{originalName});
+    }
+
+    public void updateIncomeTypeBudget(String type, double budget){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(INCOME_TYPE_TABLE_COL3, budget);
+        String[] updateType = {type};
+        db.update(INCOME_TYPE_TABLE_NAME, contentValues, INCOME_TYPE_TABLE_COL2 + " = ?" , updateType);
+
+
     }
 
     public void updateExpenseTypeBudget(String type, double budget){

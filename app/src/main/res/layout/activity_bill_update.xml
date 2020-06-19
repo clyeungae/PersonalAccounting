@@ -116,13 +116,15 @@
                 <Button
                     android:id="@+id/billUpdate_cancel_button"
                     android:text="@string/cancel_button"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    style="@style/Dusk"/>
                 <TextView
                     android:layout_weight="1"/>
                 <Button
                     android:id="@+id/billUpdate_update_button"
                     android:text="@string/update_button"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    style="@style/Dusk"/>
             </TableRow>
         </TableLayout>
 
