@@ -207,7 +207,8 @@ public class ChartActivity extends AppCompatActivity {
 
     private void showBarChart(){
         final String[] monthArray = getResources().getStringArray(R.array.monthArray);
-        List<Double> dateValueList = getBillDataOfYear(selectedYear, selectedIncome, selectedType);
+
+        List<Double> dateValueList;
         ArrayList<BarEntry> entries = new ArrayList<>();
         StringBuilder title = new StringBuilder(selectedYear + " ");
 
@@ -215,20 +216,37 @@ public class ChartActivity extends AppCompatActivity {
             GregorianCalendar calendar = new GregorianCalendar();
             title.append(monthArray[selectedMonth]);
             if(calendar.isLeapYear(selectedYear)){
+                dateValueList = getMonthlyBillDataOfYear(29);
 
             }
             else{
-
+                dateValueList = getMonthlyBillDataOfYear(28);
             }
         }
         else if (selectedMonth == 0 || selectedMonth == 2 || selectedMonth == 4 || selectedMonth == 6 ||
                 selectedMonth == 7 || selectedMonth == 9 || selectedMonth == 11 ){
             title.append(monthArray[selectedMonth] + " ");
+            dateValueList = getMonthlyBillDataOfYear(31);
         }
         else if(selectedMonth == 3 || selectedMonth == 5 || selectedMonth == 8 || selectedMonth == 10){
             title.append(monthArray[selectedMonth] + " ");
+             dateValueList = getMonthlyBillDataOfYear(30);
         }
         else{
+             dateValueList = getBillDataOfYear();
+
+        }
+
+        if(selectedMonth < 0 || selectedMonth > 11){
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return  String.valueOf((int)value + 1);
+                }
+            });
+        }
+        else{
+            /*
             xAxis.setValueFormatter(new IAxisValueFormatter() {
 
                 @Override
@@ -236,12 +254,8 @@ public class ChartActivity extends AppCompatActivity {
                     return  monthArray[(int) value];
                 }
             });
-            for (int i = 0; i < dateValueList.size(); i++) {
 
-                BarEntry barEntry = new BarEntry(i, dateValueList.get(i).floatValue());
-                entries.add(barEntry);
-            }
-
+             */
         }
 
         if(selectedType.equals(getResources().getString(R.string.all))){
@@ -249,6 +263,11 @@ public class ChartActivity extends AppCompatActivity {
         }
         else{
             title.append(selectedType);
+        }
+
+        for (int i = 0; i < dateValueList.size(); i++) {
+            BarEntry barEntry = new BarEntry(i, dateValueList.get(i).floatValue());
+            entries.add(barEntry);
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, title.toString());
@@ -259,16 +278,28 @@ public class ChartActivity extends AppCompatActivity {
         barChart.setData(data);
     }
 
-    private ArrayList<Double> getBillDataOfMonth(int year, int month, int numberOfDays, boolean income, String selectedType){
+    private ArrayList<Double> getMonthlyBillDataOfYear(int numberOfDays){
         ArrayList<Double> result = new ArrayList<>();
-        Cursor data = myDB.getBillTable();
+        Cursor data = myDB.getBillWithYearAndMonth(selectedYear, selectedMonth);
         for(int i = 0; i < numberOfDays; i++){
             result.add(0.0);
+        }
+        while (data.moveToNext()){
+            double amount = data.getDouble(1);
+            int day = data.getInt(4) - 1;
+            String billType = data.getString(5);
+            if(billType.equals(selectedType) || selectedType.equals(getResources().getString(R.string.all))){
+                if(selectedIncome && amount > 0){
+                    result.set(day, result.get(day) + Math.abs((amount)));
+                }else if(!selectedIncome && amount < 0){
+                    result.set(day, result.get(day) + Math.abs(amount));
+                }
+            }
         }
         return result;
     }
 
-    private ArrayList<Double> getBillDataOfYear(int year, boolean income, String type){
+    private ArrayList<Double> getBillDataOfYear(){
         Cursor data = myDB.getBillTable();
         ArrayList<Double> result = new ArrayList<>();
         for(int i = 0; i < 12; i++){
@@ -278,12 +309,12 @@ public class ChartActivity extends AppCompatActivity {
             double amount = data.getDouble(1);
             int month = data.getInt(3);
             String billType = data.getString(5);
-            if (data.getInt(2) == year){
-                if(billType.equals(type) || type.equals(getResources().getString(R.string.all))){
-                    if(income && amount > 0){
+            if (data.getInt(2) == selectedYear){
+                if(billType.equals(selectedType) || selectedType.equals(getResources().getString(R.string.all))){
+                    if(selectedIncome && amount > 0){
                         result.set(month, result.get(month) + Math.abs(amount));
                     }
-                    else if(!income && amount < 0){
+                    else if(!selectedIncome && amount < 0){
                         result.set(month, result.get(month) + Math.abs(amount));
                     }
                 }
@@ -368,12 +399,15 @@ public class ChartActivity extends AppCompatActivity {
                 showBarChart();
             }
 
-
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
             selectedMonth = -1;
+            if(selectedBarChart){
+                initBarChart();
+                showBarChart();
+            }
         }
     }
 
