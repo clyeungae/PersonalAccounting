@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteStatement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Dictionary;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -30,16 +29,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String BILL_TABLE_COL7 = "REMARK";
 
     public static final String USER_TABLE_NAME = "user";
-    public static final String USER_TABLE_COL2 = "BUDGET";
-    public static final String USER_TABLE_COL3 = "MONTHLY_EXPENSE";
-    public static final String USER_TABLE_COL4 = "MONTHLY_INCOME";
-    public static final String USER_TABLE_COL5 = "START_YEAR";
-    public static final String USER_TABLE_COL6 = "START_MONTH";
-    public static final String USER_TABLE_COL7 = "START_DAY_OF_MONTH";
-    public static final String USER_TABLE_COL8 = "LAST_ACTIVE_YEAR";
-    public static final String USER_TABLE_COL9 = "LAST_ACTIVE_MONTH";
-    public static final String USER_TABLE_COL10 = "LAST_ACTIVE_DAY_OF_MONTH";
-    public static final String USER_TABLE_COL11 = "LANGUAGE";
+    public static final String USER_TABLE_COL2 = "BUDGET_EXPENSE";
+    public static final String USER_TABLE_COL3 = "BUDGET_INCOME";
+    public static final String USER_TABLE_COL4 = "MONTHLY_EXPENSE";
+    public static final String USER_TABLE_COL5 = "MONTHLY_INCOME";
+    public static final String USER_TABLE_COL6 = "START_YEAR";
+    public static final String USER_TABLE_COL7 = "START_MONTH";
+    public static final String USER_TABLE_COL8 = "START_DAY_OF_MONTH";
+    public static final String USER_TABLE_COL9 = "LAST_ACTIVE_YEAR";
+    public static final String USER_TABLE_COL10 = "LAST_ACTIVE_MONTH";
+    public static final String USER_TABLE_COL11 = "LAST_ACTIVE_DAY_OF_MONTH";
+    public static final String USER_TABLE_COL12 = "LANGUAGE";
 
     public static final String EXPENSE_TYPE_TABLE_NAME = "expenseType";
     public static final String EXPENSE_TYPE_TABLE_COL2 = "EXPENSE_TYPE";
@@ -71,13 +71,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     USER_TABLE_COL2 + " DECIMAL(38, 2), " +
                     USER_TABLE_COL3 + " DECIMAL(38, 2), " +
                     USER_TABLE_COL4 + " DECIMAL(38, 2), " +
-                    USER_TABLE_COL5 + " INTEGER, " +
+                    USER_TABLE_COL5 + " DECIMAL(38, 2), " +
                     USER_TABLE_COL6 + " INTEGER, " +
                     USER_TABLE_COL7 + " INTEGER, " +
                     USER_TABLE_COL8 + " INTEGER, " +
                     USER_TABLE_COL9 + " INTEGER, " +
                     USER_TABLE_COL10 + " INTEGER, " +
-                    USER_TABLE_COL11 + " TEXT) " ;
+                    USER_TABLE_COL11 + " INTEGER, " +
+                    USER_TABLE_COL12 + " TEXT) " ;
             sqLiteDatabase.execSQL(createUserTable);
 
             String createExpenseTypeTable = "CREATE TABLE " + EXPENSE_TYPE_TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -252,23 +253,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(BILL_TABLE_NAME," ID= ?", new String[]{String.valueOf(billId)}) > 0;
     }
 
+    public double getMonthlyExpenseOfType(String type, int year, int month){
+        SQLiteDatabase db = this.getReadableDatabase();
+        double result = 0.0;
+        try{
+            Cursor data = db.rawQuery("SELECT " + BILL_TABLE_COL2 + " FROM " + BILL_TABLE_NAME +
+                    " WHERE " + BILL_TABLE_COL3 + " = ? AND " + BILL_TABLE_COL4 + "= ? AND " + BILL_TABLE_COL6 + "= ?", new String[]{String.valueOf(year), String.valueOf(month), type});
+
+            while(data.moveToNext()){
+                if (data.getDouble(0) < 0){
+                    result += data.getDouble(0);
+                }
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public double getMonthlyIncomeOfType(String type, int year, int month){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT " + BILL_TABLE_COL2 + "FROM " + BILL_TABLE_NAME +
+                " WHERE " + BILL_TABLE_COL3 + " = ? AND " + BILL_TABLE_COL4 + "= ?", new String[]{String.valueOf(year), String.valueOf(month)});
+        double result = 0.0;
+        while(data.moveToNext()){
+            if (data.getDouble(0) > 0){
+                result += data.getDouble(0);
+            }
+        }
+        return result;
+    }
+
     public User addUserInfo(){
         User user = new User(context);
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_TABLE_COL2, user.getBudget());
-        contentValues.put(USER_TABLE_COL3, user.getMonthlyExpense());
-        contentValues.put(USER_TABLE_COL4, user.getMonthlyIncome());
+        contentValues.put(USER_TABLE_COL2, user.getExpenseBudget());
+        contentValues.put(USER_TABLE_COL4, user.getMonthlyExpense());
+        contentValues.put(USER_TABLE_COL5, user.getMonthlyIncome());
 
         Calendar calendar = Calendar.getInstance();
-        contentValues.put(USER_TABLE_COL5, calendar.get(Calendar.YEAR));
-        contentValues.put(USER_TABLE_COL6, calendar.get(Calendar.MONTH));
-        contentValues.put(USER_TABLE_COL7, calendar.get(Calendar.DATE));
-        contentValues.put(USER_TABLE_COL8, calendar.get(Calendar.YEAR));
-        contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.MONTH));
-        contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.DATE));
-        contentValues.put(USER_TABLE_COL11, Locale.getDefault().getDisplayLanguage());
+        contentValues.put(USER_TABLE_COL6, calendar.get(Calendar.YEAR));
+        contentValues.put(USER_TABLE_COL7, calendar.get(Calendar.MONTH));
+        contentValues.put(USER_TABLE_COL8, calendar.get(Calendar.DATE));
+        contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.YEAR));
+        contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.MONTH));
+        contentValues.put(USER_TABLE_COL11, calendar.get(Calendar.DATE));
+        contentValues.put(USER_TABLE_COL12, Locale.getDefault().getDisplayLanguage());
         db.insert(USER_TABLE_NAME, null, contentValues);
 
         LinkedHashMap<String, Double> expenseMap = user.getExpenseTypeBudgetMap();
@@ -294,7 +328,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void setUserLanguage(String string){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_TABLE_COL11, string);
+        contentValues.put(USER_TABLE_COL12, string);
         db.update(USER_TABLE_NAME, contentValues,null, null);
         updateTypeLanguage(string);
     }
@@ -369,9 +403,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         User user = new User(context);
         Cursor userData = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
         if(userData.moveToFirst()) {
-            user.setBudget(userData.getDouble(1));
-            user.setMonthlyExpense(userData.getDouble(2));
-            user.setMonthlyIncome(userData.getDouble(3));
+            user.setExpenseBudget(userData.getDouble(1));
+            user.setIncomeBudget(userData.getDouble(2));
+            user.setMonthlyExpense(userData.getDouble(3));
+            user.setMonthlyIncome(userData.getDouble(4));
 
             LinkedHashMap<String, Double> expenseMap = new LinkedHashMap<>();
             LinkedHashMap<String, Double> incomeMap = new LinkedHashMap<>();
@@ -392,6 +427,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else{
             return addUserInfo();
         }
+    }
+
+    public double getUserExpenseBudget(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL2 +" FROM " + USER_TABLE_NAME, null);
+        if(data.moveToFirst()){
+            return data.getDouble(0);
+        }
+        return 0.0;
+    }
+
+    public double getUseIncomeBudget(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL3 +" FROM " + USER_TABLE_NAME, null);
+        if(data.moveToFirst()){
+            return data.getDouble(0);
+        }
+        return 0.0;
     }
 
     public Calendar getUserStartDate(){
@@ -417,9 +470,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void setUserLastActiveDate(Calendar calendar){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_TABLE_COL8, calendar.get(Calendar.YEAR));
-        contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.MONTH));
-        contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.DATE));
+        contentValues.put(USER_TABLE_COL9, calendar.get(Calendar.YEAR));
+        contentValues.put(USER_TABLE_COL10, calendar.get(Calendar.MONTH));
+        contentValues.put(USER_TABLE_COL11, calendar.get(Calendar.DATE));
 
         db.update(USER_TABLE_NAME, contentValues,null, null);
     }
@@ -447,7 +500,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public double getUserMonthlyIncome(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor userInfo = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor userInfo = db.rawQuery("SELECT " + USER_TABLE_COL5 +" FROM " + USER_TABLE_NAME, null);
         if(userInfo.moveToFirst())
             return userInfo.getDouble(3);
         else
@@ -456,9 +509,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public double getUserMonthlyExpense(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor userInfo = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor userInfo = db.rawQuery("SELECT "+ USER_TABLE_COL4+" FROM " + USER_TABLE_NAME, null);
         if(userInfo.moveToFirst())
-            return userInfo.getDouble(2);
+            return userInfo.getDouble(0);
         else
             return 0;
     }
@@ -485,6 +538,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return result;
+    }
+
+    public double getUserBudgetOfExpenseType(String type){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT " + EXPENSE_TYPE_TABLE_COL3 + " FROM " + EXPENSE_TYPE_TABLE_NAME+ " WHERE " + EXPENSE_TYPE_TABLE_COL2 + " =?", new String[]{type});
+        if(data.moveToFirst()){
+            return data.getDouble(0);
+        }
+        return 0.0;
     }
 
     public void increaseUserMonthlyIncome(double income){
@@ -518,7 +580,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public void updateUserBudget(double newBudget){
+    public void updateUserExpenseBudget(double newBudget){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -527,17 +589,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(USER_TABLE_NAME, contentValues,null, null);
     }
 
+    public void updateUserIncomeBudget(double newBudget){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_TABLE_COL3, newBudget);
+
+        db.update(USER_TABLE_NAME, contentValues,null, null);
+    }
+
     public void updateUserMonthlyIncome(double income){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_TABLE_COL4, income);
+        contentValues.put(USER_TABLE_COL5, income);
         db.update(USER_TABLE_NAME, contentValues,null, null);
     }
 
     public void updateUserMonthlyExpense(double expense){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_TABLE_COL3, expense);
+        contentValues.put(USER_TABLE_COL4, expense);
         db.update(USER_TABLE_NAME, contentValues,null, null);
     }
 

@@ -188,10 +188,10 @@ public class BudgetActivity extends AppCompatActivity {
 
     private void updateView(){
 
-        budgetView.setText(String.format("%.2f", user.getBudget()));
+        budgetView.setText(String.format("%.2f", user.getExpenseBudget()));
         expenseView.setText(String.format("%.2f", user.getMonthlyExpense()));
-        remainView.setText(String.format("%.2f", user.getBudget()+user.getMonthlyExpense()));
-        if (user.getBudget() > -user.getMonthlyExpense())
+        remainView.setText(String.format("%.2f", user.getExpenseBudget()+user.getMonthlyExpense()));
+        if (user.getExpenseBudget() > -user.getMonthlyExpense())
             remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
         else
             remainView.setTextColor(ContextCompat.getColor(this, R.color.expense));

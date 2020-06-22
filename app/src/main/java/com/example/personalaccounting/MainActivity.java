@@ -1,14 +1,12 @@
 package com.example.personalaccounting;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -156,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateButton(){
-        double remain = user.getBudget() + user.getMonthlyExpense();
+        double remain = user.getExpenseBudget() + user.getMonthlyExpense();
         if (remain < 0) {
             budgetButton.setTextColor(ContextCompat.getColor(this, R.color.expense));
         }

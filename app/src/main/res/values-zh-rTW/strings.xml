@@ -59,6 +59,8 @@
     <string name="dark_mode">黑暗模式</string>
     <string name="month">月</string>
     <string name="not_available">不適用</string>
+    <string name="expenseBudget"> 支出預算</string>
+    <string name="incomeBudget"> 收入預算 </string>
     <string name="jan">一月</string>
     <string name="feb">二月</string>
     <string name="mar">三月</string>
