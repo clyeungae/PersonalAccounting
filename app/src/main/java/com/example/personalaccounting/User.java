@@ -5,10 +5,10 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.HashSet;
 
 public class User {
-    private double budget = 0;
+    private double expenseBudget = 0;
+    private double incomeBudget = 0;
     private double monthlyExpense = 0.00;
     private double monthlyIncome = 0.00;
     private ArrayList<String> incomeType = new ArrayList<String>(Arrays.asList("Salary", "Other"));
@@ -47,9 +47,11 @@ public class User {
         return monthlyIncome;
     }
 
-    public double getBudget() {
-        return budget;
+    public double getExpenseBudget() {
+        return expenseBudget;
     }
+
+    public double getIncomeBudget() {return incomeBudget;}
 
     public LinkedHashMap<String, Double> getExpenseTypeBudgetMap() {
         return expenseTypeBudget;
@@ -67,9 +69,11 @@ public class User {
         return defaultIncomeTypeBudget;
     }
 
-    public void setBudget(double budget) {
-        this.budget = budget;
+    public void setExpenseBudget(double expenseBudget) {
+        this.expenseBudget = expenseBudget;
     }
+
+    public void setIncomeBudget(double incomeBudget) {this.incomeBudget = incomeBudget;}
 
     public void setMonthlyIncome(double monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
