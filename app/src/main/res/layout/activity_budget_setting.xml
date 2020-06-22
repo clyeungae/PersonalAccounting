@@ -36,7 +36,7 @@
                     android:layout_height="@dimen/general_column_height"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/budget" />
+                    android:text="@string/expenseBudget" />
 
                 <EditText
                     android:id="@+id/budgetSetting_expenseBudget"
@@ -55,7 +55,7 @@
                     android:layout_height="@dimen/general_column_height"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/budget" />
+                    android:text="@string/incomeBudget" />
 
                 <EditText
                     android:id="@+id/budgetSetting_incomeBudget"
