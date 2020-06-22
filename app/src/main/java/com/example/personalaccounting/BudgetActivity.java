@@ -107,18 +107,19 @@ public class BudgetActivity extends AppCompatActivity {
             TextView remainView = new TextView(getApplicationContext());
 
             tableRow.setWeightSum(4.0f);
+            tableRow.setOnClickListener(new tableRowOnclickListener(false, type));
             typeTextView.setText(type);
             typeTextView.setTextSize(15);
-            typeTextView.setGravity(Gravity.LEFT);
+            typeTextView.setGravity(Gravity.CENTER);
 
-            budgetView.setGravity(Gravity.LEFT);
+            budgetView.setGravity(Gravity.CENTER);
             budgetView.setText(String.valueOf(expenseTypeBudgetMap.getOrDefault(type, 0.0)));
 
-            amountView.setGravity(Gravity.LEFT);
+            amountView.setGravity(Gravity.CENTER);
             amountView.setText(String.valueOf(expenseTypeAmountMap.getOrDefault(type, 0.0)));
 
 
-            remainView.setGravity(Gravity.LEFT);
+            remainView.setGravity(Gravity.CENTER);
             double remain = Double.valueOf(budgetView.getText().toString()) + Double.valueOf(amountView.getText().toString());
             remainView.setText(String.valueOf(remain));
             if(remain > 0){
@@ -128,7 +129,7 @@ public class BudgetActivity extends AppCompatActivity {
                 remainView.setTextColor(ContextCompat.getColor(this, R.color.expense));
             }
 
-            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,100, 1.0f);
             tableRow.addView(typeTextView, rowParams);
             tableRow.addView(budgetView, rowParams);
             tableRow.addView(amountView, rowParams);
@@ -145,17 +146,18 @@ public class BudgetActivity extends AppCompatActivity {
             TextView remainView = new TextView(getApplicationContext());
 
             tableRow.setWeightSum(4.0f);
+            tableRow.setOnClickListener(new tableRowOnclickListener(true, type));
             typeTextView.setText(type);
             typeTextView.setTextSize(15);
-            typeTextView.setGravity(Gravity.LEFT);
+            typeTextView.setGravity(Gravity.CENTER);
 
-            budgetView.setGravity(Gravity.LEFT);
+            budgetView.setGravity(Gravity.CENTER);
             budgetView.setText(String.valueOf(incomeTypeBudgetMap.getOrDefault(type, 0.0)));
 
-            amountView.setGravity(Gravity.LEFT);
+            amountView.setGravity(Gravity.CENTER);
             amountView.setText(String.valueOf(incomeTypeAmountMap.getOrDefault(type, 0.0)));
 
-            remainView.setGravity(Gravity.LEFT);
+            remainView.setGravity(Gravity.CENTER);
             double remain = Double.valueOf(budgetView.getText().toString()) - Double.valueOf(amountView.getText().toString());
             remainView.setText(String.valueOf(remain));
             if(remain > 0){
@@ -165,7 +167,7 @@ public class BudgetActivity extends AppCompatActivity {
                 remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
             }
 
-            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,100, 1.0f);
             tableRow.addView(typeTextView, rowParams);
             tableRow.addView(budgetView, rowParams);
             tableRow.addView(amountView, rowParams);
@@ -174,6 +176,26 @@ public class BudgetActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private class tableRowOnclickListener implements View.OnClickListener{
+
+        boolean income;
+        String type;
+
+        public tableRowOnclickListener(boolean income, String type){
+            this.income = income;
+            this.type = type;
+        }
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent (BudgetActivity.this, ViewBillRecords.class);
+            intent.putExtra("income", income);
+            intent.putExtra("type", type);
+            intent.putExtra("year", Calendar.getInstance().get(Calendar.YEAR));
+            intent.putExtra("month", Calendar.getInstance().get(Calendar.MONTH));
+            startActivity(intent);
+        }
     }
 
     private class budgetViewOnClickerListener implements View.OnClickListener{

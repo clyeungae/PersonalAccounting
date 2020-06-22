@@ -118,8 +118,16 @@ public class BillActivity extends AppCompatActivity{
     }
 
     private void updateProgressBar(){
-        double budget = myDB.getUserExpenseBudget();
-        double currentAmount = Math.abs(income?myDB.getUserMonthlyIncome():myDB.getUserMonthlyExpense());
+        double budget = 0;
+        double currentAmount = 0;
+
+        try{
+            budget = income?myDB.getUserIncomeBudget():myDB.getUserExpenseBudget();
+            currentAmount = Math.abs(income?myDB.getUserMonthlyIncome():myDB.getUserMonthlyExpense());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
 
         budgetTextView.setText("/" + String.valueOf(budget));
         budgetCurrentAmountTextView.setText(String.valueOf(currentAmount));
@@ -128,7 +136,6 @@ public class BillActivity extends AppCompatActivity{
 
         if(currentAmount < budget){
             budgetCurrentAmountTextView.setTextColor(ContextCompat.getColor(this, (income?R.color.expense:R.color.income)));
-
         }
         else{
             budgetCurrentAmountTextView.setTextColor(ContextCompat.getColor(this, (income?R.color.income:R.color.expense)));
@@ -211,12 +218,12 @@ public class BillActivity extends AppCompatActivity{
             if(isChecked) {
                 income = true;
                 typeSpinner.setAdapter(new ArrayAdapter<>(BillActivity.this, android.R.layout.simple_spinner_item, incomeTypeList));
-                //updateTypeProgressBar(true, incomeTypeList.get(0));
+                updateProgressBar();
             }
             else{
                 income = false;
                 typeSpinner.setAdapter(new ArrayAdapter<>(BillActivity.this, android.R.layout.simple_spinner_item, expenseTypeList));
-                //updateTypeProgressBar(true, expenseTypeList.get(0));
+                updateProgressBar();
             }
         }
     }

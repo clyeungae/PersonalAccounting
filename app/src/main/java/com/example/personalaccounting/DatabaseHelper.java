@@ -292,6 +292,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_TABLE_COL2, user.getExpenseBudget());
+        contentValues.put(USER_TABLE_COL3, user.getIncomeBudget());
         contentValues.put(USER_TABLE_COL4, user.getMonthlyExpense());
         contentValues.put(USER_TABLE_COL5, user.getMonthlyIncome());
 
@@ -438,7 +439,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 0.0;
     }
 
-    public double getUseIncomeBudget(){
+    public double getUserIncomeBudget(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL3 +" FROM " + USER_TABLE_NAME, null);
         if(data.moveToFirst()){
@@ -450,9 +451,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Calendar getUserStartDate(){
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor data = db.rawQuery("SELECT " + USER_TABLE_COL6 + ", " + USER_TABLE_COL7 + ", " + USER_TABLE_COL8 +
+                " FROM " + USER_TABLE_NAME, null);
         if(data.moveToFirst()){
-            return new GregorianCalendar(data.getInt(4), data.getInt(5), data.getInt(6));
+            return new GregorianCalendar(data.getInt(0), data.getInt(1), data.getInt(2));
         }
         return null;
 
@@ -460,9 +462,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Calendar getUserLastActiveDate(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL9  + ", " + USER_TABLE_COL10 + ", " + USER_TABLE_COL11 +
+                " FROM " + USER_TABLE_NAME, null);
         if(data.moveToFirst()){
-            return new GregorianCalendar(data.getInt(7), data.getInt(8), data.getInt(9));
+            return new GregorianCalendar(data.getInt(0), data.getInt(1), data.getInt(2));
         }
         return null;
     }
