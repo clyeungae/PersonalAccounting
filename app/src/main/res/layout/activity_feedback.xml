@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_title_height"
+        android:text="@string/feedback"
+        android:textColor="@color/main_view"
+        android:textSize="@dimen/general_title_text_size"
+        android:gravity="center"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_column_height"
+        android:hint="@string/subject"
+        android:singleLine="true"
+        android:id="@+id/feedback_email_subject"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/feedback_main_height"
+        android:hint="@string/feedback"
+        android:id="@+id/feedback_email_content"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_column_height"
+        android:text="@string/submit_button"
+        android:id="@+id/feedback_submit"
+        style="@style/Dusk"/>
+
+</LinearLayout>

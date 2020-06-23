@@ -8,6 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Dusk">
+        <activity android:name=".FeedbackActivity"/>
         <activity android:name=".BillActivity"/>
         <activity android:name=".ViewBillRecords"/>
         <activity android:name=".SettingActivity"/>

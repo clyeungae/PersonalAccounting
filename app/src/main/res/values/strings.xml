@@ -73,6 +73,12 @@
     <string name="expenseBudget">Expense Budget</string>
     <string name="incomeBudget">Income Budget</string>
     <string name="view_all_bill_record">Click to view bill record</string>
+    <string name="feedback">Feedback</string>
+    <string name="subject">Subject</string>
+    <string name="EmailClientNotFoundMessage">There is no email client installed.</string>
+    <string name="EmptyFeedbackMessage">Feedback cannot be empty</string>
+    <string name="SendEmailMessage">Send email with ...</string>
+    <string name="defaultEmailSubject">Feedback for PersonalAccouting</string>
     <string-array name="monthArray">
         <item>@string/jan</item>
         <item>@string/feb</item>

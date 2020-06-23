@@ -59,7 +59,8 @@
                 android:scaleType="center"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_baseline_account_box_24"
-                android:visibility="invisible"/>
+                android:visibility="visible"
+                android:id="@+id/feedback_button"/>
 
         </TableRow>
     </TableLayout>

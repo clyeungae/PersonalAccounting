@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">個人記帳</string>
+    <string name="app_name">個人記帳本</string>
     <string name="clothing">衣物</string>
     <string name="food">飲食</string>
     <string name="transport">交通</string>
@@ -62,6 +62,12 @@
     <string name="expenseBudget">支出預算</string>
     <string name="incomeBudget">收入預算</string>
     <string name="view_all_bill_record">點擊查看賬單記錄</string>
+    <string name="feedback">反饋</string>
+    <string name="subject">標題</string>
+    <string name="EmailClientNotFoundMessage">沒有安裝電子郵件客戶端</string>
+    <string name="EmptyFeedbackMessage">反饋不能為空</string>
+    <string name="SendEmailMessage">選取應用程式以發送電子郵件</string>
+    <string name="defaultEmailSubject">反饋:個人記帳本</string>
     <string name="jan">一月</string>
     <string name="feb">二月</string>
     <string name="mar">三月</string>
