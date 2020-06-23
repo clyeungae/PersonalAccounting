@@ -1,6 +1,9 @@
 package com.example.personalaccounting;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -18,7 +21,7 @@ public class UserSettingActivity extends AppCompatActivity {
 
     private DatabaseHelper myDB;
 
-    private Switch darkThemeSwitch;
+    private Button billButton;
     private TextView languageTextView;
     private TextView startDateTextView;
     private TextView lastActiveTextView;
@@ -27,7 +30,7 @@ public class UserSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
 
-
+        billButton = findViewById(R.id.userSetting_viewBillRecord);
         languageTextView = findViewById(R.id.userSetting_languageTextView);
         startDateTextView = findViewById(R.id.userSetting_startDateTextView);
         lastActiveTextView = findViewById(R.id.userSetting_lastActiveDateTextView);
@@ -38,8 +41,17 @@ public class UserSettingActivity extends AppCompatActivity {
         languageTextView.setText(Locale.getDefault().getDisplayLanguage());
         startDateTextView.setText(sdf.format(myDB.getUserStartDate().getTime()));
         lastActiveTextView.setText(sdf.format(myDB.getUserLastActiveDate().getTime()));
+        billButton.setOnClickListener(new billButtonOnClickListener());
 
     }
 
+    private class billButtonOnClickListener implements View.OnClickListener{
 
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(UserSettingActivity.this, ViewBillRecords.class);
+            intent.putExtra("fullRecord", true);
+            startActivity(intent);
+        }
+    }
 }

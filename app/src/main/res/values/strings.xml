@@ -72,6 +72,7 @@
     <string name="dec">Dec</string>
     <string name="expenseBudget">Expense Budget</string>
     <string name="incomeBudget">Income Budget</string>
+    <string name="view_all_bill_record">Click to view bill record</string>
     <string-array name="monthArray">
         <item>@string/jan</item>
         <item>@string/feb</item>

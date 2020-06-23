@@ -173,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
     private void openBillRecord (boolean income){
         Intent intent = new Intent(MainActivity.this, ViewBillRecords.class);
         intent.putExtra("income", income);
+        intent.putExtra("year", Calendar.getInstance().get(Calendar.YEAR));
+        intent.putExtra("month", Calendar.getInstance().get(Calendar.MONTH));
         intent.putExtra("type", getResources().getString(R.string.all));
         startActivity(intent);
     }
