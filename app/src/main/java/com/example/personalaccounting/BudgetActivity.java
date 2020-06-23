@@ -58,7 +58,7 @@ public class BudgetActivity extends AppCompatActivity {
         super.onStart();
 
         user = myDB.getUserInfo();
-        updateView();
+        updateExpenseSummaryView();
         budgetView.setOnClickListener(new budgetViewOnClickerListener());
 
         expenseTypeList = myDB.getExpenseTypeList();
@@ -110,19 +110,22 @@ public class BudgetActivity extends AppCompatActivity {
             TextView remainView = new TextView(getApplicationContext());
 
             tableRow.setWeightSum(4.0f);
+            tableRow.setOnClickListener(new tableRowOnclickListener(false, type));
             typeTextView.setText(type);
             typeTextView.setTextSize(15);
             typeTextView.setGravity(Gravity.CENTER);
 
+            double expenseBudget = expenseTypeBudgetMap.getOrDefault(type, 0.0);
+            double expenseAmount = expenseTypeAmountMap.getOrDefault(type, 0.0);
             budgetView.setGravity(Gravity.CENTER);
-            budgetView.setText(String.valueOf(expenseTypeBudgetMap.getOrDefault(type, 0.0)));
+            budgetView.setText(String.valueOf(expenseBudget));
 
             amountView.setGravity(Gravity.CENTER);
-            amountView.setText(String.valueOf(expenseTypeAmountMap.getOrDefault(type, 0.0)));
+            amountView.setText(String.valueOf(Math.abs(expenseAmount)));
 
 
             remainView.setGravity(Gravity.CENTER);
-            double remain = Double.valueOf(budgetView.getText().toString()) + Double.valueOf(amountView.getText().toString());
+            double remain = expenseBudget + expenseAmount;
             remainView.setText(String.valueOf(remain));
             if(remain > 0){
                 remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
@@ -131,7 +134,7 @@ public class BudgetActivity extends AppCompatActivity {
                 remainView.setTextColor(ContextCompat.getColor(this, R.color.expense));
             }
 
-            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 100, 1.0f);
             tableRow.addView(typeTextView, rowParams);
             tableRow.addView(budgetView, rowParams);
             tableRow.addView(amountView, rowParams);
@@ -148,18 +151,21 @@ public class BudgetActivity extends AppCompatActivity {
             TextView remainView = new TextView(getApplicationContext());
 
             tableRow.setWeightSum(4.0f);
+            tableRow.setOnClickListener(new tableRowOnclickListener(true, type));
             typeTextView.setText(type);
             typeTextView.setTextSize(15);
             typeTextView.setGravity(Gravity.CENTER);
 
+            double incomeBudget = incomeTypeBudgetMap.getOrDefault(type, 0.0);
+            double incomeAmount = incomeTypeAmountMap.getOrDefault(type, 0.0);
             budgetView.setGravity(Gravity.CENTER);
-            budgetView.setText(String.valueOf(incomeTypeBudgetMap.getOrDefault(type, 0.0)));
+            budgetView.setText(String.valueOf(incomeBudget));
 
             amountView.setGravity(Gravity.CENTER);
-            amountView.setText(String.valueOf(incomeTypeAmountMap.getOrDefault(type, 0.0)));
+            amountView.setText(String.valueOf(incomeAmount));
 
             remainView.setGravity(Gravity.CENTER);
-            double remain = Double.valueOf(budgetView.getText().toString()) - Double.valueOf(amountView.getText().toString());
+            double remain = incomeBudget - incomeAmount;
             remainView.setText(String.valueOf(remain));
             if(remain > 0){
                 remainView.setTextColor(ContextCompat.getColor(this, R.color.expense));
@@ -168,15 +174,34 @@ public class BudgetActivity extends AppCompatActivity {
                 remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
             }
 
-            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 100, 1.0f);
             tableRow.addView(typeTextView, rowParams);
             tableRow.addView(budgetView, rowParams);
             tableRow.addView(amountView, rowParams);
             tableRow.addView(remainView, rowParams);
             incomeDetailTable.addView(tableRow);
-
         }
 
+    }
+
+    private class tableRowOnclickListener implements View.OnClickListener{
+
+        boolean income;
+        String type;
+
+        public tableRowOnclickListener(boolean income, String type){
+            this.income = income;
+            this.type = type;
+        }
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent (BudgetActivity.this, ViewBillRecords.class);
+            intent.putExtra("income", income);
+            intent.putExtra("type", type);
+            intent.putExtra("year", Calendar.getInstance().get(Calendar.YEAR));
+            intent.putExtra("month", Calendar.getInstance().get(Calendar.MONTH));
+            startActivity(intent);
+        }
     }
 
     private class budgetViewOnClickerListener implements View.OnClickListener{
@@ -185,14 +210,13 @@ public class BudgetActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(BudgetActivity.this, BudgetSettingActivity.class);
             startActivity(intent);
-
         }
     }
 
-    private void updateView(){
+    private void updateExpenseSummaryView(){
 
         budgetView.setText(String.format("%.2f", user.getExpenseBudget()));
-        expenseView.setText(String.format("%.2f", user.getMonthlyExpense()));
+        expenseView.setText(String.format("%.2f", Math.abs(user.getMonthlyExpense())));
         remainView.setText(String.format("%.2f", user.getExpenseBudget()+user.getMonthlyExpense()));
         if (user.getExpenseBudget() > -user.getMonthlyExpense())
             remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
