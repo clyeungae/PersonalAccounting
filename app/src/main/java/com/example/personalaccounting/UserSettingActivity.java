@@ -18,6 +18,7 @@ public class UserSettingActivity extends AppCompatActivity {
 
     private DatabaseHelper myDB;
 
+    private Switch darkThemeSwitch;
     private TextView languageTextView;
     private TextView startDateTextView;
     private TextView lastActiveTextView;
@@ -26,17 +27,19 @@ public class UserSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
 
+
         languageTextView = findViewById(R.id.userSetting_languageTextView);
         startDateTextView = findViewById(R.id.userSetting_startDateTextView);
         lastActiveTextView = findViewById(R.id.userSetting_lastActiveDateTextView);
 
 
         myDB = new DatabaseHelper(this);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         languageTextView.setText(Locale.getDefault().getDisplayLanguage());
         startDateTextView.setText(sdf.format(myDB.getUserStartDate().getTime()));
         lastActiveTextView.setText(sdf.format(myDB.getUserLastActiveDate().getTime()));
 
     }
+
 
 }

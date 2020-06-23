@@ -148,21 +148,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public Cursor getBillTable(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + BILL_TABLE_NAME, null);
-        return data;
+        return db.rawQuery("SELECT * FROM " + BILL_TABLE_NAME, null);
     }
 
     public Bill getBillById(long id){
+        Bill result = null;
         SQLiteDatabase db = this.getReadableDatabase();
         String[] target = {Long.toString(id)};
         Cursor billInfo = db.rawQuery("SELECT * FROM " + BILL_TABLE_NAME + " WHERE ID = ? ", target);
 
         if(billInfo.moveToFirst()){
-            return new Bill(billInfo.getInt(0), billInfo.getDouble(1), new GregorianCalendar(billInfo.getInt(2), billInfo.getInt(3),billInfo.getInt(4)),
+            result = new Bill(billInfo.getInt(0), billInfo.getDouble(1), new GregorianCalendar(billInfo.getInt(2), billInfo.getInt(3),billInfo.getInt(4)),
                     billInfo.getString(5), billInfo.getString(6));
         }
-        else
-            return null;
+        billInfo.close();
+        return result;
     }
 
     public boolean updateBill(Bill updatedBill){
@@ -253,39 +253,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(BILL_TABLE_NAME," ID= ?", new String[]{String.valueOf(billId)}) > 0;
     }
 
-    public double getMonthlyExpenseOfType(String type, int year, int month){
-        SQLiteDatabase db = this.getReadableDatabase();
-        double result = 0.0;
-        try{
-            Cursor data = db.rawQuery("SELECT " + BILL_TABLE_COL2 + " FROM " + BILL_TABLE_NAME +
-                    " WHERE " + BILL_TABLE_COL3 + " = ? AND " + BILL_TABLE_COL4 + "= ? AND " + BILL_TABLE_COL6 + "= ?", new String[]{String.valueOf(year), String.valueOf(month), type});
-
-            while(data.moveToNext()){
-                if (data.getDouble(0) < 0){
-                    result += data.getDouble(0);
-                }
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public double getMonthlyIncomeOfType(String type, int year, int month){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT " + BILL_TABLE_COL2 + "FROM " + BILL_TABLE_NAME +
-                " WHERE " + BILL_TABLE_COL3 + " = ? AND " + BILL_TABLE_COL4 + "= ?", new String[]{String.valueOf(year), String.valueOf(month)});
-        double result = 0.0;
-        while(data.moveToNext()){
-            if (data.getDouble(0) > 0){
-                result += data.getDouble(0);
-            }
-        }
-        return result;
-    }
-
     public User addUserInfo(){
         User user = new User(context);
         SQLiteDatabase db = this.getWritableDatabase();
@@ -317,12 +284,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String getUserLanguage(){
+        String result = "";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor userData = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
         if(userData.moveToFirst()) {
-                return userData.getString(10);
+                result = userData.getString(10);
         }
-        return null;
+        userData.close();
+        return result;
     }
 
     public void setUserLanguage(String string){
@@ -401,27 +370,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public User getUserInfo(){
         SQLiteDatabase db = this.getReadableDatabase();
         User user = new User(context);
-        Cursor userData = db.rawQuery("SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor userData = db.rawQuery("SELECT "+USER_TABLE_COL2 + ", " + USER_TABLE_COL3 + ", " + USER_TABLE_COL4 + ", " + USER_TABLE_COL5 +" FROM " + USER_TABLE_NAME, null);
         if(userData.moveToFirst()) {
-            user.setExpenseBudget(userData.getDouble(1));
-            user.setIncomeBudget(userData.getDouble(2));
-            user.setMonthlyExpense(userData.getDouble(3));
-            user.setMonthlyIncome(userData.getDouble(4));
+            user.setExpenseBudget(userData.getDouble(0));
+            user.setIncomeBudget(userData.getDouble(1));
+            user.setMonthlyExpense(userData.getDouble(2));
+            user.setMonthlyIncome(userData.getDouble(3));
 
             LinkedHashMap<String, Double> expenseMap = new LinkedHashMap<>();
             LinkedHashMap<String, Double> incomeMap = new LinkedHashMap<>();
 
-            Cursor expenseTypeData = db.rawQuery("SELECT * FROM " + EXPENSE_TYPE_TABLE_NAME, null);
+            Cursor expenseTypeData = db.rawQuery("SELECT "+ EXPENSE_TYPE_TABLE_COL2 + ", " + EXPENSE_TYPE_TABLE_COL3 +" FROM " + EXPENSE_TYPE_TABLE_NAME, null);
             while (expenseTypeData.moveToNext()) {
-                expenseMap.put(expenseTypeData.getString(1), expenseTypeData.getDouble(2));
+                expenseMap.put(expenseTypeData.getString(0), expenseTypeData.getDouble(1));
             }
             user.setExpenseTypeBudgetMap(expenseMap);
-            Cursor incomeTypeData = db.rawQuery("SELECT * FROM " + INCOME_TYPE_TABLE_NAME, null);
+            Cursor incomeTypeData = db.rawQuery("SELECT "+INCOME_TYPE_TABLE_COL2 + ", "+ INCOME_TYPE_TABLE_COL3 +" FROM " + INCOME_TYPE_TABLE_NAME, null);
             while (incomeTypeData.moveToNext()) {
-                incomeMap.put(incomeTypeData.getString(1), incomeTypeData.getDouble(2));
+                incomeMap.put(incomeTypeData.getString(0), incomeTypeData.getDouble(1));
             }
             user.setIncomeTypeBudgetMap(incomeMap);
-
+            expenseTypeData.close();
+            incomeTypeData.close();
+            userData.close();
             return user;
         }
         else{
@@ -429,42 +400,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public double getUserExpenseBudget(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL2 +" FROM " + USER_TABLE_NAME, null);
-        if(data.moveToFirst()){
-            return data.getDouble(0);
-        }
-        return 0.0;
-    }
-
-    public double getUseIncomeBudget(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL3 +" FROM " + USER_TABLE_NAME, null);
-        if(data.moveToFirst()){
-            return data.getDouble(0);
-        }
-        return 0.0;
-    }
-
     public Calendar getUserStartDate(){
-
+        Calendar result = Calendar.getInstance();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL6 + ", " + USER_TABLE_COL7 + ", " + USER_TABLE_COL8 + " FROM " + USER_TABLE_NAME, null);
         if(data.moveToFirst()){
-            return new GregorianCalendar(data.getInt(4), data.getInt(5), data.getInt(6));
+            result =  new GregorianCalendar(data.getInt(0), data.getInt(1), data.getInt(2));
         }
-        return null;
+        data.close();
+        return result;
 
     }
 
     public Calendar getUserLastActiveDate(){
+        Calendar result = Calendar.getInstance();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery(" SELECT * FROM " + USER_TABLE_NAME, null);
+        Cursor data = db.rawQuery(" SELECT "+ USER_TABLE_COL9 + ", " + USER_TABLE_COL10 + ", " + USER_TABLE_COL11 +" FROM " + USER_TABLE_NAME, null);
         if(data.moveToFirst()){
-            return new GregorianCalendar(data.getInt(7), data.getInt(8), data.getInt(9));
+            result =  new GregorianCalendar(data.getInt(0), data.getInt(1), data.getInt(2));
         }
-        return null;
+        data.close();
+        return result;
     }
 
     public void setUserLastActiveDate(Calendar calendar){
@@ -499,21 +455,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public double getUserMonthlyIncome(){
+        double result = 0;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor userInfo = db.rawQuery("SELECT " + USER_TABLE_COL5 +" FROM " + USER_TABLE_NAME, null);
-        if(userInfo.moveToFirst())
-            return userInfo.getDouble(3);
-        else
-            return 0;
+        Cursor userInfo = db.rawQuery("SELECT "+ USER_TABLE_COL5 +" FROM " + USER_TABLE_NAME, null);
+        if(userInfo.moveToFirst()) {
+            result = userInfo.getDouble(0);
+        }
+        userInfo.close();
+        return result;
     }
 
     public double getUserMonthlyExpense(){
+        double result = 0;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor userInfo = db.rawQuery("SELECT "+ USER_TABLE_COL4+" FROM " + USER_TABLE_NAME, null);
-        if(userInfo.moveToFirst())
-            return userInfo.getDouble(0);
-        else
-            return 0;
+        Cursor userInfo = db.rawQuery("SELECT "+ USER_TABLE_COL4 +" FROM " + USER_TABLE_NAME, null);
+        if(userInfo.moveToFirst()) {
+            result = userInfo.getDouble(0);
+        }
+        userInfo.close();
+        return result;
     }
 
 
@@ -525,7 +485,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         while(data.moveToNext()){
             result.add(data.getString(1));
         }
-
+        data.close();
         return result;
     }
 
@@ -536,17 +496,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         while(data.moveToNext()){
             result.add(data.getString(1));
         }
-
+        data.close();
         return result;
-    }
-
-    public double getUserBudgetOfExpenseType(String type){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT " + EXPENSE_TYPE_TABLE_COL3 + " FROM " + EXPENSE_TYPE_TABLE_NAME+ " WHERE " + EXPENSE_TYPE_TABLE_COL2 + " =?", new String[]{type});
-        if(data.moveToFirst()){
-            return data.getDouble(0);
-        }
-        return 0.0;
     }
 
     public void increaseUserMonthlyIncome(double income){
@@ -565,7 +516,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         while(data.moveToNext()){
             result.put(data.getString(1), data.getDouble(2));
         }
-
+        data.close();
         return result;
     }
 
@@ -576,7 +527,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         while(data.moveToNext()){
             result.put(data.getString(1), data.getDouble(2));
         }
-
+        data.close();
         return result;
     }
 
@@ -638,9 +589,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(INCOME_TYPE_TABLE_COL3, budget);
-        String[] updateType = {type};
-        db.update(INCOME_TYPE_TABLE_NAME, contentValues, INCOME_TYPE_TABLE_COL2 + " = ?" , updateType);
-
+        db.update(INCOME_TYPE_TABLE_NAME, contentValues, INCOME_TYPE_TABLE_COL2 + " = ?" , new String[]{type});
 
     }
 
@@ -648,8 +597,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EXPENSE_TYPE_TABLE_COL3, budget);
-        String[] updateType = {type};
-        db.update(EXPENSE_TYPE_TABLE_NAME, contentValues, EXPENSE_TYPE_TABLE_COL2 + " = ?" , updateType);
+        db.update(EXPENSE_TYPE_TABLE_NAME, contentValues, EXPENSE_TYPE_TABLE_COL2 + " = ?" ,  new String[]{type});
     }
 
     public void deleteExpenseType (ArrayList<String> expenseTypeToBeDeleteList){

@@ -8,7 +8,7 @@
     <color name="switchThumbNormal">#BE8CA5</color>
     <color name="main_view">#000000</color>
     <color name="expense">#D15006</color>
-    <color name="income">#56D590</color>
+    <color name="income">#1F7547</color>
     <color name="pieChartHole">#605685</color>
     <array name="pieChartColorArray">
         <item>#4B7BA6</item>

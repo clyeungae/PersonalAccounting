@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
     DatabaseHelper myDB;
     User user;
 
+    TextView budgetTextView;
     EditText expenseBudgetInput;
     EditText incomeBudgetInput;
     Button submitButton;
@@ -58,8 +60,9 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
         myDB = new DatabaseHelper(this);
 
-        expenseBudgetInput = (EditText) findViewById(R.id.budgetSetting_expenseBudget);
-        incomeBudgetInput = (EditText) findViewById(R.id.budgetSetting_incomeBudget);
+        budgetTextView = (TextView) findViewById(R.id.budgetSetting_budget_view);
+        expenseBudgetInput = (EditText) findViewById(R.id.budgetSetting_expenseBudget_input);
+        incomeBudgetInput = (EditText) findViewById(R.id.budgetSetting_incomeBudget_input);
         submitButton = (Button) findViewById(R.id.budgetSetting_submit_button);
         cancelButton = (Button) findViewById(R.id.budgetSetting_cancel_button);
 
@@ -185,9 +188,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
             EditText editText = findViewById(clickedImageButtonId - 5000);
             TableRow tableRow = findViewById(clickedImageButtonId + 5000);
 
-            if(addExpenseTypeEditTextList.contains(editText)) {
-                addExpenseTypeEditTextList.remove(editText);
-            }
+            addExpenseTypeEditTextList.remove(editText);
+
             expenseTypeTable.removeView(tableRow);
 
         }
@@ -269,10 +271,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
                 }
             }
             else{
-                if(removeExpenseTypeList.contains(typeName)){
-                    removeExpenseTypeList.remove(typeName);
-                }
-                else if(removeIncomeTypeList.contains(typeName)){
+                if(!removeExpenseTypeList.remove(typeName)){
                     removeIncomeTypeList.remove(typeName);
                 }
             }
@@ -283,17 +282,18 @@ public class BudgetSettingActivity extends AppCompatActivity {
     private class submitButtonOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            String expenseEntry = expenseBudgetInput.getText().toString();
-            if (expenseEntry.length() > 0){
-                myDB.updateUserExpenseBudget(Double.valueOf(expenseEntry));
+            String expenseBudgetEntry = expenseBudgetInput.getText().toString();
+            if (expenseBudgetEntry.length() > 0){
+                myDB.updateUserExpenseBudget(Double.valueOf(expenseBudgetEntry));
 
             }
 
-            String incomeEntry = incomeBudgetInput.getText().toString();
-            if (incomeEntry.length() > 0){
-                myDB.updateUserIncomeBudget(Double.valueOf(incomeEntry));
+            String incomeBudgetEntry = incomeBudgetInput.getText().toString();
+            if (incomeBudgetEntry.length() > 0){
+                myDB.updateUserIncomeBudget(Double.valueOf(incomeBudgetEntry));
 
             }
+
 
             //check delete type
             if(removeExpenseTypeList.size() > 0){
@@ -386,5 +386,5 @@ public class BudgetSettingActivity extends AppCompatActivity {
         public void onClick(View view) {
             finish();
         }
-    };
+    }
 }

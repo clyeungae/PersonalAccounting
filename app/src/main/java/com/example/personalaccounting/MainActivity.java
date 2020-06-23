@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     private class budgetOnClickListener implements View.OnClickListener{
 
         public void onClick(View view) {
-            openBudgetActivity(user);
+            openBudgetActivity();
         }
 
     }
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         expenseButton.setText(String.format("%.2f", user.getMonthlyExpense()));
         incomeButton.setText(String.format("%.2f", user.getMonthlyIncome()));
     }
-    private void openBudgetActivity(User user){
+    private void openBudgetActivity(){
         Intent intent = new Intent(MainActivity.this, BudgetActivity.class);
         startActivity(intent);
     }
