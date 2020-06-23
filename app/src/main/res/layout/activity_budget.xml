@@ -21,11 +21,32 @@
         android:layout_below="@id/budget_title"
         android:id="@+id/budget_mainView">
 
-        <TableRow>
+        <TableRow
+            android:weightSum="3">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/expense"
+                android:textSize="@dimen/budget_table_textSize"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/income"
+                android:textSize="@dimen/budget_table_textSize"
+                android:gravity="center"/>
+        </TableRow>
+        <TableRow
+            android:weightSum="3">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/budget"
                 android:gravity="center"
                 android:textSize="@dimen/budget_table_textSize"
@@ -37,15 +58,25 @@
                 android:layout_weight="1"
                 android:textSize="@dimen/budget_table_textSize"
                 android:gravity="center"
-                android:id="@+id/budget_view"
+                android:id="@+id/budget_expenseBudgetView"
                 />
 
-        </TableRow>
-        <TableRow>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/expense"
+                android:layout_weight="1"
+                android:textSize="@dimen/budget_table_textSize"
+                android:gravity="center"
+                android:id="@+id/budget_incomeBudgetView"
+                />
+
+        </TableRow>
+        <TableRow
+            android:weightSum="3">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/amount"
                 android:gravity="center"
                 android:textSize="@dimen/budget_table_textSize"
                 android:layout_weight="1"
@@ -58,8 +89,17 @@
                 android:textSize="@dimen/budget_table_textSize"
                 android:layout_weight="1"
                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/budget_income_view"
+                android:gravity="center"
+                android:textSize="@dimen/budget_table_textSize"
+                android:layout_weight="1"
+                />
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:weightSum="3">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +111,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/budget_remain_view"
+                android:id="@+id/budget_expenseRemainView"
+                android:gravity="center"
+                android:textSize="@dimen/budget_table_textSize"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/budget_incomeRemainView"
                 android:gravity="center"
                 android:textSize="@dimen/budget_table_textSize"
                 android:layout_weight="1"
