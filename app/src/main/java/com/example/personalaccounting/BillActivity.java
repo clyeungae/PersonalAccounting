@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class BillActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class BillActivity extends AppCompatActivity {
 
     private DatabaseHelper myDB;
     double monthlyExpense, monthlyIncome;
@@ -107,7 +107,7 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
        updateProgressBar();
 
         typeSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, expenseTypeList.toArray()));
-        typeSpinner.setOnItemSelectedListener(this);
+        typeSpinner.setOnItemSelectedListener(new typeSpinnerOnItemSelectedListener());
 
         typeSwitch.setTextOff(getResources().getString(R.string.expense));
         typeSwitch.setTextOn(getResources().getString(R.string.income));
@@ -190,6 +190,9 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
                     if(addBill(new Bill(amount, targetDate, typeSpinner.getSelectedItem().toString(), remarkText.getText().toString())))
                     {
                         amountText.setText("");
+                        remarkText.setText("");
+                        updateProgressBar();
+                        updateTypeProgressBar(typeSpinner.getSelectedItem().toString());
                         Toast.makeText(BillActivity.this, R.string.AddBillSuccessMessage, Toast.LENGTH_LONG).show();
                     }
                     else{
@@ -233,13 +236,16 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
         else return false;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        updateTypeProgressBar(adapterView.getSelectedItem().toString());
+    private class typeSpinnerOnItemSelectedListener implements AdapterView.OnItemSelectedListener{
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            updateTypeProgressBar(adapterView.getSelectedItem().toString());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
