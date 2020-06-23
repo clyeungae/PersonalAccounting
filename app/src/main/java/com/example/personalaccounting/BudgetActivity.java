@@ -24,9 +24,13 @@ public class BudgetActivity extends AppCompatActivity {
     DatabaseHelper myDB;
     User user;
 
-    TextView budgetView;
-    TextView remainView;
+    TextView expenseBudgetView;
+    TextView expenseRemainView;
     TextView expenseView;
+
+    TextView incomeBudgetView;
+    TextView incomeRemainView;
+    TextView incomeView;
 
     TableLayout expenseDetailTable;
     TableLayout incomeDetailTable;
@@ -45,9 +49,12 @@ public class BudgetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_budget);
 
         myDB = new DatabaseHelper(this);
-        budgetView = (TextView) findViewById(R.id.budget_view);
-        remainView = (TextView) findViewById(R.id.budget_remain_view);
+        expenseBudgetView = (TextView) findViewById(R.id.budget_expenseBudgetView);
+        expenseRemainView = (TextView) findViewById(R.id.budget_expenseRemainView);
         expenseView = (TextView) findViewById(R.id.budget_expense_view);
+        incomeBudgetView = (TextView) findViewById(R.id.budget_incomeBudgetView);
+        incomeRemainView = (TextView) findViewById(R.id.budget_incomeRemainView);
+        incomeView = (TextView) findViewById(R.id.budget_income_view);
         expenseDetailTable = (TableLayout) findViewById(R.id.budget_expense_detail);
         incomeDetailTable = (TableLayout) findViewById(R.id.budget_income_detail);
 
@@ -58,8 +65,8 @@ public class BudgetActivity extends AppCompatActivity {
         super.onStart();
 
         user = myDB.getUserInfo();
-        updateExpenseSummaryView();
-        budgetView.setOnClickListener(new budgetViewOnClickerListener());
+        updateSummaryView();
+        expenseBudgetView.setOnClickListener(new budgetViewOnClickerListener());
 
         expenseTypeList = myDB.getExpenseTypeList();
         incomeTypeList = myDB.getIncomeTypeList();
@@ -213,15 +220,29 @@ public class BudgetActivity extends AppCompatActivity {
         }
     }
 
-    private void updateExpenseSummaryView(){
+    private void updateSummaryView(){
 
-        budgetView.setText(String.format("%.2f", user.getExpenseBudget()));
+        expenseBudgetView.setText(String.format("%.2f", user.getExpenseBudget()));
         expenseView.setText(String.format("%.2f", Math.abs(user.getMonthlyExpense())));
-        remainView.setText(String.format("%.2f", user.getExpenseBudget()+user.getMonthlyExpense()));
-        if (user.getExpenseBudget() > -user.getMonthlyExpense())
-            remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
+        double expenseRemain = user.getExpenseBudget()+user.getMonthlyExpense();
+        expenseRemainView.setText(String.format("%.2f", expenseRemain));
+        if (expenseRemain > 0)
+            expenseRemainView.setTextColor(ContextCompat.getColor(this, R.color.income));
         else
-            remainView.setTextColor(ContextCompat.getColor(this, R.color.expense));
+            expenseRemainView.setTextColor(ContextCompat.getColor(this, R.color.expense));
+
+        incomeBudgetView.setText(String.format("%.2f", user.getIncomeBudget()));
+        incomeView.setText(String.format("%.2f", Math.abs(user.getMonthlyIncome())));
+        double incomeRemain =  user.getIncomeBudget() - user.getMonthlyIncome();
+        incomeRemainView.setText(String.format("%.2f", incomeRemain));
+        if ((incomeRemain < 0))
+            incomeRemainView.setTextColor(ContextCompat.getColor(this, R.color.income));
+        else
+            incomeRemainView.setTextColor(ContextCompat.getColor(this, R.color.expense));
+
+
     }
+
+
 
 }

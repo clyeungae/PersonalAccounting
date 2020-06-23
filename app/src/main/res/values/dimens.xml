@@ -12,9 +12,9 @@
     <dimen name="main_budgetRemain_text">40sp</dimen>
     <dimen name="main_view_height">20sp</dimen>
     <dimen name="bill_submitButton_text">15sp</dimen>
-    <dimen name="budget_horizontal_margin">50sp</dimen>
+    <dimen name="budget_horizontal_margin">30sp</dimen>
     <dimen name="budget_vertical_margin">30sp</dimen>
-    <dimen name="budget_table_textSize">30sp</dimen>
+    <dimen name="budget_table_textSize">20sp</dimen>
     <dimen name="bottom_nav_height">50sp</dimen>
     <dimen name="setting_horizontal_margin">50sp</dimen>
     <dimen name="setting_vertical_margin">150sp</dimen>
