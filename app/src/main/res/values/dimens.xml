@@ -24,4 +24,5 @@
     <dimen name="chart_parameter_height">180sp</dimen>
     <dimen name="chart_icon_view_height">50sp</dimen>
     <dimen name="general_scroll_view">120sp</dimen>
+    <dimen name="bill_progressBar_height">30sp</dimen>
 </resources>

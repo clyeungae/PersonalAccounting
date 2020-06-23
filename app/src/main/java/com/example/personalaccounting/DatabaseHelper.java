@@ -135,6 +135,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public double getMonthlyExpenseOfType(int year, int month, String type){
+        SQLiteDatabase db = this.getReadableDatabase();
+        double result = 0;
+        Cursor data = db.rawQuery("SELECT " + BILL_TABLE_COL2 + " FROM " + BILL_TABLE_NAME + " WHERE " +
+                BILL_TABLE_COL3 + " =? AND " + BILL_TABLE_COL4 + " =? AND " + BILL_TABLE_COL6 + "=?", new String[]{String.valueOf(year), String.valueOf(month), type});
+        while(data.moveToNext()){
+            if(data.getDouble(0 ) < 0)
+                result += data.getDouble(0);
+        }
+        data.close();
+        return result;
+    }
+
+    public double getMonthlyIncomeOfType(int year, int month, String type){
+        SQLiteDatabase db = this.getReadableDatabase();
+        double result = 0;
+        Cursor data = db.rawQuery("SELECT " + BILL_TABLE_COL2 + " FROM " + BILL_TABLE_NAME + " WHERE " +
+                BILL_TABLE_COL3 + " =? AND " + BILL_TABLE_COL4 + " =? AND " + BILL_TABLE_COL6 + "=?", new String[]{String.valueOf(year), String.valueOf(month), type});
+        while(data.moveToNext()){
+            if(data.getDouble(0 ) > 0)
+                result += data.getDouble(0);
+        }
+        data.close();
+        return result;
+    }
+
     public Cursor getBillWithYear(int year){
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + BILL_TABLE_NAME + " WHERE " + BILL_TABLE_COL3 + " = ? " , new String[]{String.valueOf(year)});
@@ -400,6 +426,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public double getUserExpenseBudget(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        double result = 0;
+        Cursor data = db.rawQuery("SELECT " + USER_TABLE_COL2 + " FROM " + USER_TABLE_NAME, null);
+        if(data.moveToFirst()){
+            result = data.getDouble(0);
+        }
+        data.close();
+        return result;
+    }
+
+    public double getUserIncomeBudget(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        double result = 0;
+        Cursor data = db.rawQuery("SELECT " + USER_TABLE_COL3 + " FROM " + USER_TABLE_NAME, null);
+        if(data.moveToFirst()){
+            result = data.getDouble(0);
+        }
+        data.close();
+        return result;
+    }
+
+
     public Calendar getUserStartDate(){
         Calendar result = Calendar.getInstance();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -572,6 +621,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.clear();
         contentValues.put(BILL_TABLE_COL6, newName);
         db.update(BILL_TABLE_NAME, contentValues, BILL_TABLE_COL2 + "< 0 AND " + BILL_TABLE_COL6 + "=?", new String[]{originalName});
+    }
+
+    public double getExpenseTypeBudget(String type){
+        double result = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT " + EXPENSE_TYPE_TABLE_COL3 + " FROM " + EXPENSE_TYPE_TABLE_NAME + " WHERE " + EXPENSE_TYPE_TABLE_COL2 + " =?", new String[]{type});
+        if(data.moveToFirst()){
+            result = data.getDouble(0);
+        }
+        data.close();
+        return result;
+    }
+
+    public double getIncomeTypeBudget(String type){
+        double result = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT " + INCOME_TYPE_TABLE_COL3 + " FROM " + INCOME_TYPE_TABLE_NAME + " WHERE " + INCOME_TYPE_TABLE_COL2 + " =?", new String[]{type});
+        if(data.moveToFirst()){
+            result = data.getDouble(0);
+        }
+        data.close();
+        return result;
     }
 
     public void updateIncomeTypeName(String originalName, String newName){
