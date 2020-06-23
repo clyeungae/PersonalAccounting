@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,12 +37,20 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
     private Switch typeSwitch;
     private Button submitButton;
 
+    private TextView budgetTextView;
+    private TextView amountTextView;
+    private ProgressBar budgetProgressBar;
+    private TextView typeBudgetTextView;
+    private TextView typeAmountTextView;
+    private ProgressBar typeBudgetProgressBar;
+
     private ImageButton chartButton;
     private ImageButton homeButton;
     private ImageButton settingButton;
 
-    ArrayList<String> expenseTypeList;
-    ArrayList<String> incomeTypeList;
+    private ArrayList<String> expenseTypeList;
+    private ArrayList<String> incomeTypeList;
+    private boolean income = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,13 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
         amountText = (EditText) findViewById(R.id.amount_input);
         submitButton = (Button) findViewById(R.id.submit_button);
         typeSwitch = (Switch) findViewById(R.id.income_switch);
+
+        budgetTextView = (TextView) findViewById(R.id.bill_budgetTextView);
+        amountTextView = (TextView) findViewById(R.id.bill_amountView);
+        budgetProgressBar = (ProgressBar) findViewById(R.id.bill_budgetProgressBar);
+        typeBudgetTextView = (TextView) findViewById(R.id.bill_typeBudgetTextView);
+        typeAmountTextView = (TextView) findViewById(R.id.bill_typeAmountView);
+        typeBudgetProgressBar = (ProgressBar) findViewById(R.id.bill_typeBudgetProgressBar);
 
         chartButton = (ImageButton) findViewById(R.id.chart_button);
         homeButton = (ImageButton) findViewById(R.id.home_button);
@@ -87,7 +104,7 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
         expenseTypeList = myDB.getExpenseTypeList();
         incomeTypeList = myDB.getIncomeTypeList();
 
-
+       updateProgressBar();
 
         typeSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, expenseTypeList.toArray()));
         typeSpinner.setOnItemSelectedListener(this);
@@ -99,6 +116,42 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    private void updateProgressBar(){
+        double budget = income?myDB.getUserIncomeBudget():myDB.getUserExpenseBudget();
+        double amount = Math.abs(income?myDB.getUserMonthlyIncome():myDB.getUserMonthlyExpense());
+
+        budgetTextView.setText("/" + budget);
+        amountTextView.setText(String.valueOf(amount));
+        budgetProgressBar.setMax((int) budget);
+        budgetProgressBar.setProgress((int) amount);
+
+        if(amount >= budget){
+            amountTextView.setTextColor(ContextCompat.getColor(this, income?R.color.income:R.color.expense));
+        }
+        else {
+            amountTextView.setTextColor(ContextCompat.getColor(this, income?R.color.expense:R.color.income));
+        }
+
+    }
+
+    private void updateTypeProgressBar(String type){
+        double budget = income?myDB.getIncomeTypeBudget(type):myDB.getExpenseTypeBudget(type);
+        double amount = Math.abs(income?myDB.getMonthlyIncomeOfType(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), type):
+                myDB.getMonthlyExpenseOfType(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), type));
+
+        typeBudgetTextView.setText("/" + budget);
+        typeAmountTextView.setText(String.valueOf(amount));
+        typeBudgetProgressBar.setMax((int) budget);
+        typeBudgetProgressBar.setProgress((int) amount);
+
+        if(amount >= budget){
+            typeAmountTextView.setTextColor(ContextCompat.getColor(this, income?R.color.income:R.color.expense));
+        }
+        else {
+            typeAmountTextView.setTextColor(ContextCompat.getColor(this, income?R.color.expense:R.color.income));
+        }
+
+    }
     private class settingButtonOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
@@ -156,11 +209,17 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             if(isChecked) {
+                income = true;
                 typeSpinner.setAdapter(new ArrayAdapter<>(BillActivity.this, android.R.layout.simple_spinner_item, incomeTypeList));
+
             }
             else{
+                income = false;
                 typeSpinner.setAdapter(new ArrayAdapter<>(BillActivity.this, android.R.layout.simple_spinner_item, expenseTypeList));
             }
+            updateProgressBar();
+            updateTypeProgressBar(income?incomeTypeList.get(0):expenseTypeList.get(0));
+
         }
     }
 
@@ -175,8 +234,8 @@ public class BillActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        updateTypeProgressBar(adapterView.getSelectedItem().toString());
     }
 
     @Override
