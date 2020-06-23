@@ -35,58 +35,6 @@
                 android:layout_weight="1"
                 android:inputType="numberDecimal"/>
         </TableRow>
-        <TableRow
-            android:layout_height="@dimen/bill_progressRowHeight"
-            android:weightSum="6">
-            <TextView
-                android:layout_weight="2"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/bill_currentAmount"
-                android:gravity="right"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/bill_budgetTotal"
-                android:gravity="left"/>
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:id="@+id/bill_budgetProgressBar"
-                android:layout_weight="2"/>
-
-        </TableRow>
-        <TableRow
-            android:layout_height="@dimen/bill_progressRowHeight"
-            android:weightSum="6">
-            <TextView
-                android:layout_weight="2"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/bill_typeCurrentAmount"
-                android:gravity="right"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/bill_typeBudget"
-                android:gravity="left"/>
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:id="@+id/bill_type_progressBar"
-                android:layout_weight="2"/>
-
-        </TableRow>
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"

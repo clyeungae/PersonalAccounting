@@ -18,6 +18,7 @@ public class UserSettingActivity extends AppCompatActivity {
 
     private DatabaseHelper myDB;
 
+    private Switch darkThemeSwitch;
     private TextView languageTextView;
     private TextView startDateTextView;
     private TextView lastActiveTextView;
@@ -26,6 +27,7 @@ public class UserSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
 
+        darkThemeSwitch = findViewById(R.id.userSetting_darkThemeSwitch);
         languageTextView = findViewById(R.id.userSetting_languageTextView);
         startDateTextView = findViewById(R.id.userSetting_startDateTextView);
         lastActiveTextView = findViewById(R.id.userSetting_lastActiveDateTextView);
@@ -36,7 +38,21 @@ public class UserSettingActivity extends AppCompatActivity {
         languageTextView.setText(Locale.getDefault().getDisplayLanguage());
         startDateTextView.setText(sdf.format(myDB.getUserStartDate().getTime()));
         lastActiveTextView.setText(sdf.format(myDB.getUserLastActiveDate().getTime()));
-
+        darkThemeSwitch.setOnCheckedChangeListener(new darkThemeSwitchOnCheckedChangeListener());
+        darkThemeSwitch.setTextOff(getResources().getString(R.string.general));
+        darkThemeSwitch.setTextOn(getResources().getString(R.string.dark_mode));
     }
 
+    private class darkThemeSwitchOnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener{
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if(isChecked){
+
+            }
+            else{
+
+            }
+        }
+    }
 }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,8 +25,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
     DatabaseHelper myDB;
     User user;
 
-    EditText expenseBudgetInput;
-    EditText incomeBudgetInput;
+    TextView budgetTextView;
+    EditText budgetInput;
     Button submitButton;
     Button cancelButton;
     TableLayout expenseTypeTable;
@@ -58,8 +59,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
         myDB = new DatabaseHelper(this);
 
-        expenseBudgetInput = (EditText) findViewById(R.id.budgetSetting_expenseBudget);
-        incomeBudgetInput = (EditText) findViewById(R.id.budgetSetting_incomeBudget);
+        budgetTextView = (TextView) findViewById(R.id.budgetSetting_budget_view);
+        budgetInput = (EditText) findViewById(R.id.budgetSetting_budget_input);
         submitButton = (Button) findViewById(R.id.budgetSetting_submit_button);
         cancelButton = (Button) findViewById(R.id.budgetSetting_cancel_button);
 
@@ -74,8 +75,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
         super.onStart();
 
         user = myDB.getUserInfo();
-        expenseBudgetInput.setHint(Double.toString(user.getExpenseBudget()));
-        incomeBudgetInput.setHint(Double.toString(user.getIncomeBudget()));
+        budgetInput.setHint(Double.toString(user.getBudget()));
 
         expenseTypeList = createCheckBoxList(expenseTypeTable, myDB.getExpenseTypeList(), myDB.getExpenseTypeBudgetMap());
         incomeTypeList = createCheckBoxList(incomeTypeTable, myDB.getIncomeTypeList(), myDB.getIncomeTypeBudgetMap());
@@ -283,18 +283,11 @@ public class BudgetSettingActivity extends AppCompatActivity {
     private class submitButtonOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            String expenseEntry = expenseBudgetInput.getText().toString();
-            if (expenseEntry.length() > 0){
-                myDB.updateUserExpenseBudget(Double.valueOf(expenseEntry));
+            String entry = budgetInput.getText().toString();
+            if (entry.length() > 0){
+                myDB.updateUserBudget(Double.valueOf(entry));
 
             }
-
-            String incomeEntry = incomeBudgetInput.getText().toString();
-            if (incomeEntry.length() > 0){
-                myDB.updateUserIncomeBudget(Double.valueOf(incomeEntry));
-
-            }
-
             //check delete type
             if(removeExpenseTypeList.size() > 0){
                 myDB.deleteExpenseType(removeExpenseTypeList);
