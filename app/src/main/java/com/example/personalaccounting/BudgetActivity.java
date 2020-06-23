@@ -19,8 +19,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-;
-
 public class BudgetActivity extends AppCompatActivity {
 
     DatabaseHelper myDB;
@@ -70,33 +68,38 @@ public class BudgetActivity extends AppCompatActivity {
 
         expenseTypeBudgetMap = myDB.getExpenseTypeBudgetMap();
         incomeTypeBudgetMap = myDB.getIncomeTypeBudgetMap();
-
-        while(currentMonthBillData.moveToNext()){
-            double amount = currentMonthBillData.getDouble(1);
-            String type = currentMonthBillData.getString(5);
-            if(amount > 0){
-                if(!incomeTypeList.contains(type)){
-                    incomeTypeList.add(type);
-                }
-                if(incomeTypeAmountMap.containsKey(type)){
-                    incomeTypeAmountMap.replace(type, incomeTypeAmountMap.get(type) + amount);
-                }
-                else{
-                    incomeTypeAmountMap.put(type, amount);
-                }
-            }
-            else{
-                if (!expenseTypeList.contains(type)){
-                    expenseTypeList.add(type);
-                }
-                if(expenseTypeAmountMap.containsKey(type)){
-                    expenseTypeAmountMap.replace(type, expenseTypeAmountMap.get(type) + amount);
+        try{
+            while(currentMonthBillData.moveToNext()){
+                double amount = currentMonthBillData.getDouble(1);
+                String type = currentMonthBillData.getString(5);
+                if(amount > 0){
+                    if(!incomeTypeList.contains(type)){
+                        incomeTypeList.add(type);
+                    }
+                    if(incomeTypeAmountMap.containsKey(type)){
+                        incomeTypeAmountMap.replace(type, incomeTypeAmountMap.get(type) + amount);
+                    }
+                    else{
+                        incomeTypeAmountMap.put(type, amount);
+                    }
                 }
                 else{
-                    expenseTypeAmountMap.put(type, amount);
-                }
+                    if (!expenseTypeList.contains(type)){
+                        expenseTypeList.add(type);
+                    }
+                    if(expenseTypeAmountMap.containsKey(type)){
+                        expenseTypeAmountMap.replace(type, expenseTypeAmountMap.get(type) + amount);
+                    }
+                    else{
+                        expenseTypeAmountMap.put(type, amount);
+                    }
 
+                }
             }
+
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
         }
 
         for(String type: expenseTypeList){
@@ -109,16 +112,16 @@ public class BudgetActivity extends AppCompatActivity {
             tableRow.setWeightSum(4.0f);
             typeTextView.setText(type);
             typeTextView.setTextSize(15);
-            typeTextView.setGravity(Gravity.LEFT);
+            typeTextView.setGravity(Gravity.CENTER);
 
-            budgetView.setGravity(Gravity.LEFT);
+            budgetView.setGravity(Gravity.CENTER);
             budgetView.setText(String.valueOf(expenseTypeBudgetMap.getOrDefault(type, 0.0)));
 
-            amountView.setGravity(Gravity.LEFT);
+            amountView.setGravity(Gravity.CENTER);
             amountView.setText(String.valueOf(expenseTypeAmountMap.getOrDefault(type, 0.0)));
 
 
-            remainView.setGravity(Gravity.LEFT);
+            remainView.setGravity(Gravity.CENTER);
             double remain = Double.valueOf(budgetView.getText().toString()) + Double.valueOf(amountView.getText().toString());
             remainView.setText(String.valueOf(remain));
             if(remain > 0){
@@ -147,15 +150,15 @@ public class BudgetActivity extends AppCompatActivity {
             tableRow.setWeightSum(4.0f);
             typeTextView.setText(type);
             typeTextView.setTextSize(15);
-            typeTextView.setGravity(Gravity.LEFT);
+            typeTextView.setGravity(Gravity.CENTER);
 
-            budgetView.setGravity(Gravity.LEFT);
+            budgetView.setGravity(Gravity.CENTER);
             budgetView.setText(String.valueOf(incomeTypeBudgetMap.getOrDefault(type, 0.0)));
 
-            amountView.setGravity(Gravity.LEFT);
+            amountView.setGravity(Gravity.CENTER);
             amountView.setText(String.valueOf(incomeTypeAmountMap.getOrDefault(type, 0.0)));
 
-            remainView.setGravity(Gravity.LEFT);
+            remainView.setGravity(Gravity.CENTER);
             double remain = Double.valueOf(budgetView.getText().toString()) - Double.valueOf(amountView.getText().toString());
             remainView.setText(String.valueOf(remain));
             if(remain > 0){
@@ -188,10 +191,10 @@ public class BudgetActivity extends AppCompatActivity {
 
     private void updateView(){
 
-        budgetView.setText(String.format("%.2f", user.getBudget()));
+        budgetView.setText(String.format("%.2f", user.getExpenseBudget()));
         expenseView.setText(String.format("%.2f", user.getMonthlyExpense()));
-        remainView.setText(String.format("%.2f", user.getBudget()+user.getMonthlyExpense()));
-        if (user.getBudget() > -user.getMonthlyExpense())
+        remainView.setText(String.format("%.2f", user.getExpenseBudget()+user.getMonthlyExpense()));
+        if (user.getExpenseBudget() > -user.getMonthlyExpense())
             remainView.setTextColor(ContextCompat.getColor(this, R.color.income));
         else
             remainView.setTextColor(ContextCompat.getColor(this, R.color.expense));

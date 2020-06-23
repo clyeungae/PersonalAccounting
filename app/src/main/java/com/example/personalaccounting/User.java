@@ -5,14 +5,14 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.HashSet;
 
 public class User {
-    private double budget = 0;
+    private double expenseBudget = 0;
+    private double incomeBudget = 0;
     private double monthlyExpense = 0.00;
     private double monthlyIncome = 0.00;
-    private ArrayList<String> incomeType = new ArrayList<String>(Arrays.asList("Salary", "Other"));
-    private ArrayList<String> expenseType = new ArrayList<String>(Arrays.asList("Clothing", "Food", "Housing", "Transport", "Other"));
+    private ArrayList<String> incomeType = new ArrayList<>(Arrays.asList("Salary", "Other"));
+    private ArrayList<String> expenseType = new ArrayList<>(Arrays.asList("Clothing", "Food", "Housing", "Transport", "Other"));
     private final LinkedHashMap<String, Double> defaultIncomeTypeBudget;
     private final LinkedHashMap<String, Double> defaultExpenseTypeBudget;
     private LinkedHashMap<String, Double> incomeTypeBudget;
@@ -28,7 +28,7 @@ public class User {
                 put(context.getResources().getString(R.string.other), 0.0);
             }
         };
-        expenseTypeBudget = new LinkedHashMap<String, Double>(defaultExpenseTypeBudget);
+        expenseTypeBudget = new LinkedHashMap<>(defaultExpenseTypeBudget);
 
         defaultIncomeTypeBudget = new LinkedHashMap<String, Double>(){
             {
@@ -36,7 +36,7 @@ public class User {
                 put(context.getResources().getString(R.string.other), 0.0);
             }
         };
-        incomeTypeBudget = new LinkedHashMap<String, Double>(defaultIncomeTypeBudget);
+        incomeTypeBudget = new LinkedHashMap<>(defaultIncomeTypeBudget);
     }
 
     public double getMonthlyExpense() {
@@ -47,8 +47,8 @@ public class User {
         return monthlyIncome;
     }
 
-    public double getBudget() {
-        return budget;
+    public double getExpenseBudget() {
+        return expenseBudget;
     }
 
     public LinkedHashMap<String, Double> getExpenseTypeBudgetMap() {
@@ -67,8 +67,8 @@ public class User {
         return defaultIncomeTypeBudget;
     }
 
-    public void setBudget(double budget) {
-        this.budget = budget;
+    public void setExpenseBudget(double expenseBudget) {
+        this.expenseBudget = expenseBudget;
     }
 
     public void setMonthlyIncome(double monthlyIncome) {
@@ -85,5 +85,13 @@ public class User {
 
     public void setIncomeTypeBudgetMap(LinkedHashMap<String, Double> incomeTypeBudget) {
         this.incomeTypeBudget = incomeTypeBudget;
+    }
+
+    public double getIncomeBudget() {
+        return incomeBudget;
+    }
+
+    public void setIncomeBudget(double incomeBudget) {
+        this.incomeBudget = incomeBudget;
     }
 }

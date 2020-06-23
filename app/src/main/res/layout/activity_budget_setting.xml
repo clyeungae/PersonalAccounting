@@ -32,15 +32,15 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/budgetSetting_budget_view"
+
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/general_column_height"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/budget" />
+                    android:text="@string/expenseBudget" />
 
                 <EditText
-                    android:id="@+id/budgetSetting_budget_input"
+                    android:id="@+id/budgetSetting_expenseBudget_input"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/general_column_height"
                     android:layout_weight="1"
@@ -48,6 +48,27 @@
                     />
 
             </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/budgetSetting_budget_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/incomeBudget" />
+
+                <EditText
+                    android:id="@+id/budgetSetting_incomeBudget_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/general_column_height"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+
+            </TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/general_column_height"

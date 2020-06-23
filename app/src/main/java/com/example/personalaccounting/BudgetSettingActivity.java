@@ -26,7 +26,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
     User user;
 
     TextView budgetTextView;
-    EditText budgetInput;
+    EditText expenseBudgetInput;
+    EditText incomeBudgetInput;
     Button submitButton;
     Button cancelButton;
     TableLayout expenseTypeTable;
@@ -60,7 +61,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
         myDB = new DatabaseHelper(this);
 
         budgetTextView = (TextView) findViewById(R.id.budgetSetting_budget_view);
-        budgetInput = (EditText) findViewById(R.id.budgetSetting_budget_input);
+        expenseBudgetInput = (EditText) findViewById(R.id.budgetSetting_expenseBudget_input);
+        incomeBudgetInput = (EditText) findViewById(R.id.budgetSetting_incomeBudget_input);
         submitButton = (Button) findViewById(R.id.budgetSetting_submit_button);
         cancelButton = (Button) findViewById(R.id.budgetSetting_cancel_button);
 
@@ -75,7 +77,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
         super.onStart();
 
         user = myDB.getUserInfo();
-        budgetInput.setHint(Double.toString(user.getBudget()));
+        expenseBudgetInput.setHint(Double.toString(user.getExpenseBudget()));
+        incomeBudgetInput.setHint(Double.toString(user.getIncomeBudget()));
 
         expenseTypeList = createCheckBoxList(expenseTypeTable, myDB.getExpenseTypeList(), myDB.getExpenseTypeBudgetMap());
         incomeTypeList = createCheckBoxList(incomeTypeTable, myDB.getIncomeTypeList(), myDB.getIncomeTypeBudgetMap());
@@ -185,9 +188,8 @@ public class BudgetSettingActivity extends AppCompatActivity {
             EditText editText = findViewById(clickedImageButtonId - 5000);
             TableRow tableRow = findViewById(clickedImageButtonId + 5000);
 
-            if(addExpenseTypeEditTextList.contains(editText)) {
-                addExpenseTypeEditTextList.remove(editText);
-            }
+            addExpenseTypeEditTextList.remove(editText);
+
             expenseTypeTable.removeView(tableRow);
 
         }
@@ -269,10 +271,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
                 }
             }
             else{
-                if(removeExpenseTypeList.contains(typeName)){
-                    removeExpenseTypeList.remove(typeName);
-                }
-                else if(removeIncomeTypeList.contains(typeName)){
+                if(!removeExpenseTypeList.remove(typeName)){
                     removeIncomeTypeList.remove(typeName);
                 }
             }
@@ -283,11 +282,19 @@ public class BudgetSettingActivity extends AppCompatActivity {
     private class submitButtonOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            String entry = budgetInput.getText().toString();
-            if (entry.length() > 0){
-                myDB.updateUserBudget(Double.valueOf(entry));
+            String expenseBudgetEntry = expenseBudgetInput.getText().toString();
+            if (expenseBudgetEntry.length() > 0){
+                myDB.updateUserExpenseBudget(Double.valueOf(expenseBudgetEntry));
 
             }
+
+            String incomeBudgetEntry = incomeBudgetInput.getText().toString();
+            if (incomeBudgetEntry.length() > 0){
+                myDB.updateUserIncomeBudget(Double.valueOf(incomeBudgetEntry));
+
+            }
+
+
             //check delete type
             if(removeExpenseTypeList.size() > 0){
                 myDB.deleteExpenseType(removeExpenseTypeList);
@@ -379,5 +386,5 @@ public class BudgetSettingActivity extends AppCompatActivity {
         public void onClick(View view) {
             finish();
         }
-    };
+    }
 }
