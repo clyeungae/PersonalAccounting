@@ -134,11 +134,10 @@
 
         <Button
             android:id="@+id/submit_button"
-            android:layout_width="375dp"
-            android:layout_height="@dimen/main_budgetRemainButton_height"
+            android:layout_width="wrap_content"
             android:text="@string/submit_button"
-            android:textSize="@dimen/bill_submitButton_text"
-            style="@style/Dusk"/>
+            android:background="@drawable/button"
+            style="@style/button"/>
     </TableLayout>
 
     <TableLayout

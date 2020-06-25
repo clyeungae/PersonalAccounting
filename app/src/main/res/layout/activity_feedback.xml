@@ -23,10 +23,12 @@
         android:hint="@string/feedback"
         android:id="@+id/feedback_email_content"/>
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/general_column_height"
+        android:layout_gravity="center"
         android:text="@string/submit_button"
         android:id="@+id/feedback_submit"
-        style="@style/Dusk"/>
+        android:background="@drawable/button"
+        style="@style/button"/>
 
 </LinearLayout>

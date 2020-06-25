@@ -111,6 +111,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
             checkBox.setLayoutParams(rowParams);
             checkBox.setGravity(Gravity.CENTER);
             checkBox.setText(string);
+            checkBox.setTextColor(ContextCompat.getColor(this,R.color.main_view));
             checkBox.setId(originalTypeId);
             result.add(originalTypeId++);
             checkBox.setOnCheckedChangeListener( new checkBoxOnCheckedChangeListener());
@@ -152,6 +153,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
             expenseType.setHint(R.string.addNewType);
             expenseType.setSingleLine();
+            expenseType.setTextColor(ContextCompat.getColor(BudgetSettingActivity.this, R.color.textColor));
             expenseType.setLayoutParams(rowParams);
 
             imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
@@ -161,6 +163,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
             expenseTypeBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             expenseTypeBudget.setHint(R.string.budget);
+            expenseTypeBudget.setTextColor(ContextCompat.getColor(BudgetSettingActivity.this, R.color.textColor));
             expenseTypeBudget.setSingleLine();
             expenseTypeBudget.setLayoutParams(rowParams);
 
@@ -211,6 +214,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
             incomeType.setHint(R.string.addNewType);
             incomeType.setSingleLine();
+            incomeType.setTextColor(ContextCompat.getColor(BudgetSettingActivity.this, R.color.textColor));
             incomeType.setLayoutParams(rowParams);
 
             imageButton.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
@@ -220,6 +224,7 @@ public class BudgetSettingActivity extends AppCompatActivity {
 
             incomeTypeBudget.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             incomeTypeBudget.setHint(R.string.budget);
+            incomeTypeBudget.setTextColor(ContextCompat.getColor(BudgetSettingActivity.this, R.color.textColor));
             incomeTypeBudget.setSingleLine();
             incomeTypeBudget.setLayoutParams(rowParams);
 

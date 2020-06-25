@@ -8,10 +8,10 @@
     <dimen name="general_button_panel_height">40sp</dimen>
     <dimen name="general_button_panel_text_size">20sp</dimen>
     <dimen name="main_view_text">12sp</dimen>
-    <dimen name="main_budgetRemainButton_height">60sp</dimen>
+    <dimen name="button_layout_height">60sp</dimen>
     <dimen name="main_budgetRemain_text">40sp</dimen>
     <dimen name="main_view_height">20sp</dimen>
-    <dimen name="bill_submitButton_text">15sp</dimen>
+    <dimen name="button_textSize">15sp</dimen>
     <dimen name="budget_horizontal_margin">30sp</dimen>
     <dimen name="budget_vertical_margin">30sp</dimen>
     <dimen name="budget_table_textSize">20sp</dimen>
@@ -26,4 +26,6 @@
     <dimen name="general_scroll_view">120sp</dimen>
     <dimen name="bill_progressBar_height">30sp</dimen>
     <dimen name="feedback_main_height">200sp</dimen>
+    <dimen name="button_margin">10sp</dimen>
+    <dimen name="button_padding">20sp</dimen>
 </resources>

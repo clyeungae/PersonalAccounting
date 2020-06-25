@@ -132,7 +132,7 @@
                 android:id="@+id/budgetSetting_cancel_button"
                 android:text="@string/cancel_button"
                 android:layout_weight="1"
-                style="@style/Dusk"
+                style="@style/button"
                 />
             <TextView
                 android:layout_weight="1"/>
@@ -140,7 +140,7 @@
                 android:id="@+id/budgetSetting_submit_button"
                 android:text="@string/submit_button"
                 android:layout_weight="1"
-                style="@style/Dusk"/>
+                style="@style/button"/>
         </TableRow>
     </TableLayout>
 </RelativeLayout>

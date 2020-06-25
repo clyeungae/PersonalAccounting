@@ -24,12 +24,13 @@
             android:layout_weight="1">
             <ImageButton
                 android:layout_height="@dimen/setting_button_height"
-                android:layout_width="match_parent"
+                android:layout_width="50sp"
                 android:id="@+id/accountSetting_button"
                 android:layout_weight="1"
                 android:scaleType="center"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_baseline_monetization_on_24"
+                android:tooltipText="@string/feedback"
                 style="@style/Dusk"
                 />
             <ImageButton

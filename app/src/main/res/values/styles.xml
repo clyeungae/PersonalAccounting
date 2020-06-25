@@ -9,4 +9,14 @@
         <item name="android:textColorPrimaryDisableOnly">@color/textColor</item>
         <item name="colorSwitchThumbNormal">@color/switchThumbNormal</item>
     </style>
+
+    <style name="button" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/button_textSize</item>
+        <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:layout_margin">@dimen/button_margin</item>
+        <item name="android:layout_height">@dimen/button_layout_height</item>
+    </style>
 </resources>

@@ -10,6 +10,7 @@
     <color name="expense">#D15006</color>
     <color name="income">#1F7547</color>
     <color name="pieChartHole">#605685</color>
+    <color name="button_background">#6D6778</color>
     <array name="pieChartColorArray">
         <item>#4B7BA6</item>
         <item>#8E68D9</item>

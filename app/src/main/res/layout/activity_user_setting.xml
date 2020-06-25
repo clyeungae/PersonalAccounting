@@ -76,12 +76,10 @@
                 android:layout_height="match_parent">
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/general_column_height"
                     android:layout_weight="1"
                     android:text="@string/view_all_bill_record"
-                    android:gravity="center"
                     android:id="@+id/userSetting_viewBillRecord"
-                    style="@style/Dusk"/>
+                    style="@style/button"/>
             </TableRow>
 
         </TableLayout>

@@ -117,14 +117,14 @@
                     android:id="@+id/billUpdate_cancel_button"
                     android:text="@string/cancel_button"
                     android:layout_weight="1"
-                    style="@style/Dusk"/>
+                    style="@style/button"/>
                 <TextView
                     android:layout_weight="1"/>
                 <Button
                     android:id="@+id/billUpdate_update_button"
                     android:text="@string/update_button"
                     android:layout_weight="1"
-                    style="@style/Dusk"/>
+                    style="@style/button"/>
             </TableRow>
         </TableLayout>
 
