@@ -17,7 +17,7 @@
     <dimen name="budget_table_textSize">20sp</dimen>
     <dimen name="bottom_nav_height">50sp</dimen>
     <dimen name="setting_horizontal_margin">50sp</dimen>
-    <dimen name="setting_vertical_margin">150sp</dimen>
+    <dimen name="setting_vertical_margin">100sp</dimen>
     <dimen name="setting_button_height">150sp</dimen>
     <dimen name="budgetSetting_button_margin">10sp</dimen>
     <dimen name="billUpdate_button_margin">30sp</dimen>
